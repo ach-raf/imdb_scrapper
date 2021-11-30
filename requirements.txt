@@ -1,0 +1,8 @@
+BeautifulSoup4
+pandas
+lxml
+cssselect
+selenium
+psycopg2
+openpyxl
+requests
