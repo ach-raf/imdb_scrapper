@@ -11,12 +11,24 @@ from bs4 import BeautifulSoup
 import json
 import psycopg2
 
+import logging
+from selenium.webdriver.remote.remote_connection import LOGGER
+
+LOGGER.setLevel(logging.WARNING)
+
 PATH_TO_CHROME_DRIVER = r'chromedriver'
 
 # options for selenium
 options = Options()
 options.add_argument('--headless')
 options.add_argument("--incognito")
+options.add_argument("--disable-crash-reporter")
+options.add_argument("--disable-extensions")
+options.add_argument("--disable-in-process-stack-traces")
+options.add_argument("--disable-logging")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--log-level=3")
+options.add_argument("--output=/dev/null")
 options.headless = True
 
 browser = webdriver.Chrome(
@@ -30,12 +42,21 @@ GENRES = ['Animation', 'Action', 'Adventure']
 
 
 def set_up_database():
-    if not check_table_exists('details'):
-        print('creating details table')
+    if not check_table_exists('movie_details'):
+        print('creating movie_details table')
         _sql_command = \
             f''' 
-        CREATE TABLE details (imdb_id TEXT NOT NULL  PRIMARY KEY, title TEXT, score TEXT, voters TEXT, plot TEXT, 
-        poster TEXT, director Text, rated TEXT, runtime TEXT, genre TEXT, year TEXT, type TEXT, seasons TEXT) '''
+        CREATE TABLE movie_details (imdb_id TEXT NOT NULL  PRIMARY KEY, title TEXT, score TEXT, voters TEXT, plot TEXT, 
+        poster TEXT, director Text, rated TEXT, runtime TEXT, genre TEXT, type TEXT, release_date TEXT) '''
+        CURSOR.execute(_sql_command)
+        CONNECTION.commit()
+
+    if not check_table_exists('serie_details'):
+        print('creating serie_details table')
+        _sql_command = \
+            f''' 
+        CREATE TABLE serie_details (imdb_id TEXT NOT NULL  PRIMARY KEY, title TEXT, score TEXT, voters TEXT, plot TEXT, 
+        poster TEXT, creator Text, rated TEXT, runtime TEXT, genre TEXT, year TEXT, type TEXT, seasons TEXT, release_date TEXT) '''
         CURSOR.execute(_sql_command)
         CONNECTION.commit()
 
@@ -58,12 +79,18 @@ def get_imdb_id(_link):
 
 def check_item_exists(_imdb_id):
     _row = CURSOR.execute(
-        f''' SELECT title from details where imdb_id = "{_imdb_id}" ''').fetchone()
+        f''' SELECT title from movie_details where imdb_id = "{_imdb_id}" ''').fetchone()
     CONNECTION.commit()
     if _row:
         return _row[0]
     else:
-        return False
+        _row = CURSOR.execute(
+            f''' SELECT title from serie_details where imdb_id = "{_imdb_id}" ''').fetchone()
+        CONNECTION.commit()
+        if _row:
+            return _row[0]
+        else:
+            return False
 
 
 def get_dataframe(_query):
@@ -114,238 +141,166 @@ def get_html(_link):
     return _soup
 
 
-def get_title(_soup):
-    try:
-        _title = _soup.select_one("""
-            html body#styleguide-v2.fixed div#wrapper div#root.redesign div#pagecontent.pagecontent 
-            div#content-2-wide.flatland div#main_top.main div.title-overview div#title-overview-widget.heroic-overview 
-            div.vital div.title_block div.title_bar_wrapper div.titleBar div.title_wrapper h1
-            """).text
-    except AttributeError:
-        _title = 'NA'
+def list_to_string(_list):
+    formatted_list = _list[0]
+    for item in _list[1:]:
+        formatted_list.join(f', {item}')
+    return formatted_list
 
+
+def get_title(_media_info):
+    _title = 'NA'
     return clean_text(_title)
 
 
-def get_score(_soup):
+def get_score(_media_info):
     _score = 'NA'
-    try:
-        _score = clean_text(
-            _soup.select_one("""html body#styleguide-v2.fixed div#wrapper div#root.redesign div#pagecontent.pagecontent 
-            div#content-2-wide.flatland div#main_top.main div.title-overview div#title-overview-widget.heroic-overview 
-            div.vital div.title_block div.title_bar_wrapper div.ratings_wrapper div.imdbRating div.ratingValue strong 
-            span""").text)
-    except AttributeError:
-        pass
     return _score
 
 
-def get_poster(_soup):
-    _poster = 'No image Found'
+def get_poster(_media_info):
     try:
-        _poster = clean_text(
-            _soup.select_one("""html body#styleguide-v2.fixed div#wrapper div#root.redesign div#pagecontent.pagecontent 
-            div#content-2-wide.flatland div#main_top.main div.title-overview div#title-overview-widget.heroic-overview 
-            div.posterWithPlotSummary div.poster a img""")['src'])
-    except TypeError:
-        pass
-    try:
-        _poster = clean_text(
-            _soup.select_one("""html body#styleguide-v2.fixed div#wrapper div#root.redesign div#pagecontent.pagecontent 
-            div#content-2-wide.flatland div#main_top.main div.title-overview div#title-overview-widget.heroic-overview 
-            div.vital div.slate_wrapper div.poster a img""")['src'])
-    except AttributeError:
-        pass
-    except TypeError:
-        pass
-    try:
-        _poster = clean_text(
-            _soup.select_one("""html body#styleguide-v2.fixed div#wrapper div#root.redesign div#pagecontent.pagecontent 
-            div#content-2-wide.flatland div#main_top.main div.title-overview div#title-overview-widget.heroic-overview 
-            div.posterWithPlotSummary div.poster a img""")['src'])
-    except AttributeError:
-        pass
-    except TypeError:
-        pass
-    if 'https' in _poster:
-        return get_image_full_size(_poster)
+        _poster = _media_info['image']
+        if 'https' in _poster:
+            return get_image_full_size(_poster)
+        else:
+            return _poster
+    except KeyError:
+        return 'NA'
+
+
+def get_plot(_media_info):
+    _plot = 'NA'
+    return _plot
+
+
+def get_voters(_media_info):
+    _voters = 'NA'
+    return _voters
+
+
+def get_creators(_creators):
+    person_creators = []
+    for _creator in _creators:
+        try:
+            if _creator['@type'] == 'Person':
+                person_creators.append(_creator["name"])
+        except KeyError:
+            print('This is an Organization')
+    if person_creators:
+        return list_to_string(person_creators)
     else:
-        return _poster
+        return 'This was created by an Organization'
 
 
-def get_plot(_soup):
+def get_seasons(_soup):
     try:
-        _plot = clean_text(
-            _soup.select_one('html body#styleguide-v2.fixed div#wrapper div#root.redesign div#pagecontent.pagecontent '
-                             'div#content-2-wide.flatland div#main_top.main div.title-overview '
-                             'div#title-overview-widget.heroic-overview div.plot_summary_wrapper '
-                             'div.plot_summary div.summary_text').text)
-    except AttributeError:
-        _plot = 'NA'
-    return _plot.replace(',', ';')
+        _seasons = _soup.select('#browse-episodes-season')
+        return int(_seasons[0]['aria-label'].replace(' seasons', ''))
+    except IndexError:
+        try:
+            _seasons = _soup.select_one(
+                '.BrowseEpisodes__BrowseLinksContainer-sc-1a626ql-4 > a:nth-child(2) > div:nth-child(1)').text
+            return _seasons.replace(' seasons', '')
+        except AttributeError:
+            return 'NA'
 
 
-def get_voters(_soup):
+def get_series_runtime(_soup):
     try:
-        _voters = clean_text(_soup.select_one('span.small').text)
+        _runtime = _soup.select_one(
+            '.TitleBlockMetaData__MetaDataList-sc-12ein40-0 > li:nth-child(4)').text
+        return _runtime.strip()
     except AttributeError:
-        _voters = 'NA'
-    return _voters.replace(',', '.')
-
-
-def get_director(_soup):
-    _director = 'NA'
-    try:
-        _director = clean_text(_soup.select_one("""html body#styleguide-v2.fixed div#wrapper div#root.redesign 
-                                                div#pagecontent.pagecontent div#content-2-wide.flatland 
-                                                div#main_top.main div.title-overview 
-                                                div#title-overview-widget.heroic-overview div.plot_summary_wrapper 
-                                                div.plot_summary div.credit_summary_item a""").text)
-    except AttributeError:
-        pass
-    return _director
-
-
-def get_seasons_year_info(_soup):
-    _seasons_year_info = _soup.select("""html body#styleguide-v2.fixed div#wrapper div#root.redesign 
-                                        div#pagecontent.pagecontent div#content-2-wide.flatland div#main_bottom.main 
-                                        div.article div#title-episode-widget.table.full-width div.seasons-and-year-nav 
-                                        div""")
-    return _seasons_year_info
-
-
-def get_information(information, _is_series):
-    imdb_info_step = 0
-    _rated = 'NA'
-    _runtime = 'NA'
-    _genre = 'NA'
-    _release_date = 'NA'
-    for info in information:
-        if imdb_info_step == 0 and 'min' in info:
-            imdb_info_step = 1
-        """if imdb_info_step == 0 and 'Series' in info:
-            imdb_info_step = 2"""
-        if imdb_info_step == 0 and 'Animation' in info:
-            imdb_info_step = 2
-        if imdb_info_step == 0 and 'Comedy' in info:
-            imdb_info_step = 2
-        if imdb_info_step == 0 and 'Music' in info:
-            imdb_info_step = 2
-        if imdb_info_step == 0 and 'Drama' in info:
-            imdb_info_step = 2
-        if imdb_info_step == 0:
-            _rated = clean_text(info)
-        if imdb_info_step == 1:
-            _runtime = clean_text(info)
-        if imdb_info_step == 2:
-            _genre = clean_text(info)
-        if imdb_info_step == 3:
-            _release_date = clean_text(info)
-            if 'Series' in _release_date:
-                _is_series = True
-        imdb_info_step += 1
-    return _rated, _runtime, _genre.replace(',', ' '), _release_date, _is_series
-
-
-def get_type(_is_series):
-    if _is_series:
-        return 'TV Series'
-    else:
-        return 'Movie'
-
-
-def get_seasons_years(_seasons_year_info):
-    seasons = []
-    years = []
-    seasons_and_years_step = 0
-    for season in _seasons_year_info[2:]:
-        for a in season.find_all('a'):
-            if seasons_and_years_step == 0:
-                try:
-                    seasons.append(int(a.text))
-                except ValueError:
-                    pass
-            if seasons_and_years_step == 1:
-                try:
-                    years.append(int(a.text))
-                except ValueError:
-                    pass
-        seasons_and_years_step += 1
-    return seasons, years
+        return 'NA'
 
 
 def get_year(_soup):
-    _year = 'NA'
-    try:
-        _year = _soup.select_one(
-            """html body#styleguide-v2.fixed div#wrapper div#root.redesign div#pagecontent.pagecontent 
-            div#content-2-wide.flatland div#main_top.main div.title-overview div#title-overview-widget.heroic-overview 
-            div.vital div.title_block div.title_bar_wrapper div.titleBar div.title_wrapper h1 span#titleYear a""").text
-    except AttributeError:
-        pass
-    return _year
+    _year = (_soup.select_one(
+        '.TitleBlockMetaData__MetaDataList-sc-12ein40-0 > li:nth-child(2)').text).strip()
+    return _year[:len(_year)//2]
 
 
 def get_details(_link):
     print(_link)
+
     is_series = False
+    seasons = 'NA'
     imdb_info = []
-    _imdb_id = get_imdb_id(_link)
-    imdb_info.append({'imdb_id': _imdb_id})
+
     soup = get_html(_link)
     _script = soup.find('script', type='application/ld+json')
-    print(f'script: {_script}')
-    with open('script.js', 'w', encoding='utf-8') as f:
-        f.write(f'{_script}')
-    return 0
-    # title = clean_text(soup.select_one('.title_wrapper > h1:nth-child(1)').text)
-    title = get_title(soup)
-    score = get_score(soup)
-    plot = get_plot(soup)
-    voters = get_voters(soup)
-    director = get_director(soup)
-    information = clean_details_information(soup)
-    rated, runtime, genre, release_date, is_series = get_information(
-        information, is_series)
-    poster = get_poster(soup)
-    seasons_year_info = get_seasons_year_info(soup)
-    _type = get_type(is_series)
-    _seasons = '-1'
-    year = 'NA'
-    if is_series:
-        seasons, years = get_seasons_years(seasons_year_info)
-        try:
-            _seasons = f'{max(seasons)}'
-            year = f'{min(years)} - {max(years)}'
-        except ValueError:
-            pass
-    else:
-        year = get_year(soup)
-        _year = get_year(soup)
+    _script = str(_script).replace(
+        '</script>', '').replace('<script type="application/ld+json">', '')
 
+    media_info = json.loads(_script)
+
+    imdb_id = get_imdb_id(_link)
+    title = clean_text(media_info['name'])
+    try:
+        score = media_info['aggregateRating']['ratingValue']
+    except KeyError:
+        score = 'NA'
+    try:
+        plot = clean_text(media_info['description'])
+    except KeyError:
+        plot = 'NA'
+    try:
+        rated = media_info['contentRating']
+        voters = media_info['aggregateRating']['ratingCount']
+    except KeyError:
+        rated = 'NA'
+        voters = 'NA'
+    genres = ', '.join(media_info['genre'])
+    try:
+        release_date = media_info['datePublished']
+    except KeyError:
+        release_date = 'NA'
+    poster = get_poster(media_info)
     imdb_info.append({'title': title})
     imdb_info.append({'score': score})
     imdb_info.append({'voters': voters})
     imdb_info.append({'plot': plot})
     imdb_info.append({'poster': poster})
-    if 'Series' in genre:
-        is_series = True
-        _seasons = 1
-        _type = 'TV Series'
-    if not is_series:
-        title = title[:-6]
-    insertion_details = CURSOR.execute(
-        f'INSERT INTO details VALUES ("{_imdb_id}", "{title}" , "{score}", "{voters}", "{plot}", "{poster}", "{director}"'
-        f', "{rated}", "{runtime}", "{genre}", "{year}", "{_type}", "{_seasons}" )')
+
+    type = media_info['@type']
+    match type:
+        case 'TVSeries':
+            try:
+                creators = get_creators(media_info['creator'])
+            except KeyError:
+                creators = 'NA'
+            seasons = get_seasons(soup)
+            runtime = get_series_runtime(soup)
+            years = get_year(soup)
+
+            insertion_details = CURSOR.execute(
+                f'INSERT INTO serie_details VALUES ("{imdb_id}", "{title}" , "{score}", "{voters}", "{plot}", "{poster}", "{creators}"'
+                f', "{rated}", "{runtime}", "{genres}", "{years}", "{type}", "{seasons}", "{release_date}")')
+
+        case 'Movie':
+            try:
+                directors = get_creators(media_info['director'])
+            except KeyError:
+                directors = 'NA'
+            try:
+                duration = media_info['duration']
+            except KeyError:
+                duration = 'NA'
+            insertion_details = CURSOR.execute(
+                f'INSERT INTO movie_details VALUES ("{imdb_id}", "{title}" , "{score}", "{voters}", "{plot}", "{poster}", "{directors}"'
+                f', "{rated}", "{duration}", "{genres}", "{type}", "{release_date}")')
+
     CONNECTION.commit()
     print(f'{title} Added to database')
-    """if seasons:
-        print(seasons, years)"""
+
+    return insertion_details
 
 
 def show_all():
     db = CONNECTION.cursor()
-    _rows = db.execute(f''' SELECT * from details ''').fetchall()
+    _rows = db.execute(
+        f''' SELECT * from movie_details inner join serie_details on movie_details.title = serie_details.title''').fetchall()
     CONNECTION.commit()
     print(_rows)
 
@@ -353,7 +308,8 @@ def show_all():
 def mongodb_format():
     # This enables column access by name: row['column_name']
     CONNECTION.row_factory = sqlite3.Row
-    _rows = CURSOR.execute(f''' SELECT * from details''').fetchall()
+    _rows = CURSOR.execute(
+        f''' SELECT * from movie_details inner join serie_details on movie_details.title = serie_details.title''').fetchall()
     CONNECTION.commit()
     with open('data.json', 'a+') as outfile:
         for _row in _rows:
@@ -421,13 +377,13 @@ def main():
                 ]
 
     #id_test = ['tt1345836', 'tt0482571', 'tt1375666', 'tt2084970', 'tt0756683']
-    id_test = ['tt1345836']
+    id_test = ['tt3877200']
 
     loop_counter = 1
     set_up_database()
     ids.extend(more_ids)
-    for imdb_id in id_test:
-        print(f'{loop_counter}/{len(id_test)}')
+    for imdb_id in ids:
+        print(f'{loop_counter}/{len(ids)}')
         _item = check_item_exists(imdb_id)
         if _item:
             print(f'{_item} found')
