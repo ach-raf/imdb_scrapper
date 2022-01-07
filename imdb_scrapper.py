@@ -1,75 +1,74 @@
 # Importing the required modules
-import time
+import ast
+import json
+import logging
+import os
+import random
 import re
 import sqlite3
-import os
+import string
+import time
+
 import pandas as pd
-from datetime import datetime
+import requests
+from bs4 import BeautifulSoup
+from dataclass.imdb import ImdbSerie, ImdbMovie
+from imdb_id import get_imdb_ids_dump, write_imdb_id
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from bs4 import BeautifulSoup
-import json
-import psycopg2
-
-import logging
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.remote.remote_connection import LOGGER
 
+################################################################################
 LOGGER.setLevel(logging.WARNING)
 
-PATH_TO_CHROME_DRIVER = r'chromedriver'
+CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
-# options for selenium
-options = Options()
-options.add_argument('--headless')
-options.add_argument("--incognito")
-options.add_argument("--disable-crash-reporter")
-options.add_argument("--disable-extensions")
-options.add_argument("--disable-in-process-stack-traces")
-options.add_argument("--disable-logging")
-options.add_argument("--disable-dev-shm-usage")
-options.add_argument("--log-level=3")
-options.add_argument("--output=/dev/null")
-options.headless = True
+PATH_TO_CHROME_DRIVER = os.path.join(
+    CURRENT_DIR_PATH, 'chromedriver', 'chromedriver')
 
-browser = webdriver.Chrome(
-    executable_path=PATH_TO_CHROME_DRIVER, options=options)
+DATABASE_LOCATION = os.path.join(CURRENT_DIR_PATH, 'imdb.db')
 
-database_location = 'imdb.db'
-CONNECTION = sqlite3.connect(database_location)
-CURSOR = CONNECTION.cursor()
+CONNECTION = sqlite3.connect(DATABASE_LOCATION)
 
-GENRES = ['Animation', 'Action', 'Adventure']
 
+################################################################################
 
 def set_up_database():
+    _cursor = CONNECTION.cursor()
     if not check_table_exists('movie_details'):
         print('creating movie_details table')
         _sql_command = \
-            f''' 
-        CREATE TABLE movie_details (imdb_id TEXT NOT NULL  PRIMARY KEY, title TEXT, score TEXT, voters TEXT, plot TEXT, 
-        poster TEXT, director Text, rated TEXT, runtime TEXT, genre TEXT, type TEXT, release_date TEXT) '''
-        CURSOR.execute(_sql_command)
+            f'''
+        CREATE TABLE movie_details (imdb_id TEXT NOT NULL PRIMARY KEY, title TEXT, original_title TEXT, score FLOAT, voters INT, plot TEXT,
+        poster TEXT, rated TEXT, genre TEXT, media_type TEXT, release_date TEXT, countries TEXT, actors TEXT, director Text, runtime TEXT) '''
+
+        _cursor.execute(_sql_command)
         CONNECTION.commit()
 
     if not check_table_exists('serie_details'):
         print('creating serie_details table')
         _sql_command = \
-            f''' 
-        CREATE TABLE serie_details (imdb_id TEXT NOT NULL  PRIMARY KEY, title TEXT, score TEXT, voters TEXT, plot TEXT, 
-        poster TEXT, creator Text, rated TEXT, runtime TEXT, genre TEXT, year TEXT, type TEXT, seasons TEXT, release_date TEXT) '''
-        CURSOR.execute(_sql_command)
+            f'''
+        CREATE TABLE serie_details (imdb_id TEXT NOT NULL PRIMARY KEY, title TEXT, original_title TEXT, score FLOAT, voters INT, plot TEXT,
+        poster TEXT, rated TEXT, genre TEXT, media_type TEXT, release_date TEXT, countries TEXT, actors TEXT, creator TEXT, runtime TEXT, years TEXT, seasons TEXT)'''
+        _cursor.execute(_sql_command)
         CONNECTION.commit()
+        _cursor.close()
 
 
 def check_table_exists(_table_name):
-    _rows = CURSOR.execute(
+    _cursor = CONNECTION.cursor()
+    _rows = _cursor.execute(
         f''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='{_table_name}' ''')
     CONNECTION.commit()
     if _rows.fetchone()[0] == 1:
         print(f'{_table_name} table found')
+        _cursor.close()
         return True
     else:
         print(f'{_table_name} table not found')
+        _cursor.close()
         return False
 
 
@@ -77,19 +76,64 @@ def get_imdb_id(_link):
     return re.search('https://www.imdb.com/title/(.{10}?|.{9})', _link).group(1)
 
 
+def get_countries(_soup):
+    try:
+        countries = re.search(
+            '(?<=\"countriesOfOrigin\":{\"countries\":)(.*)(?=,\"__typename\":\"CountriesOfOrigin\"},\"detailsExternalLinks\")',
+            str(_soup)).group(1)
+    except AttributeError:
+        return 'NA'
+    try:
+        countries = ast.literal_eval(countries)
+    except SyntaxError:
+        countries = countries.split(']')[0]
+        countries = str(f'{countries}' + ']')
+        countries = ast.literal_eval(countries)
+
+    clean_countries = []
+    try:
+        for country in countries:
+            clean_countries.append(country['text'])
+    except KeyError:
+        for country in countries:
+            clean_countries.append(country['id'])
+
+    return ', '.join(clean_countries)
+
+
 def check_item_exists(_imdb_id):
-    _row = CURSOR.execute(
+    _cursor = CONNECTION.cursor()
+    sql_command = f"""SELECT count(*)
+                    FROM movie_details movie
+                    INNER JOIN serie_details serie
+                    ON movie.imdb_id = serie.imdb_id
+                    WHERE (movie.imdb_id like '{_imdb_id}') OR (serie.imdb_id like '{_imdb_id}')
+                    """
+    """print(sql_command)
+    _row = _cursor.execute(sql_command).fetchone()
+    CONNECTION.commit()
+    if _row[0]:
+        _cursor.close()
+        return _row[0]
+    else:
+        _cursor.close()
+        return False"""
+
+    _row = _cursor.execute(
         f''' SELECT title from movie_details where imdb_id = "{_imdb_id}" ''').fetchone()
     CONNECTION.commit()
     if _row:
+        _cursor.close()
         return _row[0]
     else:
-        _row = CURSOR.execute(
+        _row = _cursor.execute(
             f''' SELECT title from serie_details where imdb_id = "{_imdb_id}" ''').fetchone()
         CONNECTION.commit()
         if _row:
+            _cursor.close()
             return _row[0]
         else:
+            _cursor.close()
             return False
 
 
@@ -98,11 +142,20 @@ def get_dataframe(_query):
 
 
 def clean_text(_text):
-    return _text.strip().replace('\n', '') \
-        .replace('\xa0', '') \
-        .replace('             EN', '') \
-        .replace('"', '') \
-        .replace('See full summary»', '').replace("'", '').strip()
+    cleaned_text = _text.strip().replace('\n', '')
+    cleaned_text = cleaned_text.replace('"', '')
+    cleaned_text = cleaned_text.replace(';', '')
+    cleaned_text = cleaned_text.replace(':', '')
+    cleaned_text = cleaned_text.replace('\xa0', '')
+    cleaned_text = cleaned_text.replace('&amp;', '&')
+    cleaned_text = cleaned_text.replace('&amp', '&')
+    cleaned_text = cleaned_text.replace("""&quot""", '')
+    cleaned_text = cleaned_text.replace('&apos;', "\'")
+    cleaned_text = cleaned_text.replace('&apos', "\'")
+    cleaned_text = cleaned_text.replace('             EN', '')
+    cleaned_text = cleaned_text.replace('See full summary»', '').replace(
+        "'", '').strip()
+    return cleaned_text
 
 
 def get_image_full_size(_image):
@@ -118,43 +171,66 @@ def list_to_string(_list):
     return formatted_list
 
 
-def clean_details_information(_soup):
-    try:
-        _details_information = clean_text(
-            _soup.select_one('.subtext').text).split('|')
-    except AttributeError:
-        _details_information = 'NA'
-    _clean_info = []
-    for info in _details_information:
-        _clean_info.append(clean_text(info))
-    return _clean_info
+def get_selenium_soup(_link):
+    # chrome_options for selenium
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument("--incognito")
+    chrome_options.add_argument("--disable-crash-reporter")
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--disable-in-process-stack-traces")
+    chrome_options.add_argument("--disable-logging")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--log-level=3")
+    chrome_options.add_argument("--output=/dev/null")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--disable-features=NetworkService")
+    chrome_options.add_argument("--window-size=1920x1080")
+    chrome_options.add_argument("--disable-features=VizDisplayCompositor")
+    chrome_options.headless = True
+    selenium_service = Service(PATH_TO_CHROME_DRIVER)
 
-
-def get_html(_link):
+    browser = webdriver.Chrome(
+        options=chrome_options, service=selenium_service)
     browser.implicitly_wait(0.1)
     browser.get(_link)
-    browser.minimize_window()
     # sleep to let the page load
-    # time.sleep(0.5)
+    time.sleep(0.5)
     _html = browser.page_source
-    _soup = BeautifulSoup(_html, 'lxml')
+    _soup = BeautifulSoup(_html.text, 'lxml')
+    browser.quit()
     return _soup
 
 
-def list_to_string(_list):
-    formatted_list = _list[0]
-    for item in _list[1:]:
-        formatted_list.join(f', {item}')
-    return formatted_list
+def get_html(_link):
+    try:
+        _html = requests.get(_link)
+        if _html.status_code == 404:
+            print(f'{_link}, 404 page not found')
+            return False
+        _soup = BeautifulSoup(_html.text, 'lxml')
+        return _soup
+    except requests.exceptions.ChunkedEncodingError:
+        time.sleep(10)
+        get_html(_link)
+    # return get_selenium_soup(_link)
 
 
-def get_title(_media_info):
+def get_title(_soup):
     _title = 'NA'
+    _css_selector = '.TitleHeader__TitleText-sc-1wu6n3d-0'
+    try:
+        _title = _soup.select_one(_css_selector).text
+    except AttributeError:
+        return _title
     return clean_text(_title)
 
 
 def get_score(_media_info):
-    _score = 'NA'
+    try:
+        _score = float(_media_info['aggregateRating']['ratingValue'])
+    except KeyError:
+        _score = -1
     return _score
 
 
@@ -170,25 +246,36 @@ def get_poster(_media_info):
 
 
 def get_plot(_media_info):
-    _plot = 'NA'
+    try:
+        _plot = clean_text(_media_info['description'])
+    except KeyError:
+        _plot = 'NA'
     return _plot
 
 
-def get_voters(_media_info):
-    _voters = 'NA'
-    return _voters
+def get_creators(_soup):
+    _creators = []
+    try:
+        ul = _soup.select_one(
+            '.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(1) > div:nth-child(2) > ul:nth-child(1)')
+        items = ul.find_all("li")
+        for item in items:
+            _creators.append(item.text)
+    except AttributeError:
+        return 'NA'
+    return ', '.join(_creators)
 
 
-def get_creators(_creators):
-    person_creators = []
-    for _creator in _creators:
+def clean_creator(_creator):
+    person_creator = []
+    for _creator in _creator:
         try:
             if _creator['@type'] == 'Person':
-                person_creators.append(_creator["name"])
+                person_creator.append(_creator["name"])
         except KeyError:
             print('This is an Organization')
-    if person_creators:
-        return list_to_string(person_creators)
+    if person_creator:
+        return list_to_string(person_creator)
     else:
         return 'This was created by an Organization'
 
@@ -201,100 +288,247 @@ def get_seasons(_soup):
         try:
             _seasons = _soup.select_one(
                 '.BrowseEpisodes__BrowseLinksContainer-sc-1a626ql-4 > a:nth-child(2) > div:nth-child(1)').text
-            return _seasons.replace(' seasons', '')
+            _cleaned_season = _seasons.replace(' seasons', '').replace(
+                ' season', '').replace(' Seasons', '').replace(' Season', '').strip()
+            return int(_cleaned_season)
         except AttributeError:
             return 'NA'
 
 
 def get_series_runtime(_soup):
+    _runtime = 'NA'
     try:
         _runtime = _soup.select_one(
             '.TitleBlockMetaData__MetaDataList-sc-12ein40-0 > li:nth-child(4)').text
-        return _runtime.strip()
+    except AttributeError:
+        try:
+            _runtime = _soup.select_one(
+                '.TitleBlockMetaData__MetaDataList-sc-12ein40-0 > li:nth-child(3)').text
+
+        except AttributeError:
+            return 'NA'
+    return _runtime.strip()
+
+
+def get_actors(_soup, is_series=False):
+    _actors = []
+    _movie_css_selector = '.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(3) > div:nth-child(2) > ul:nth-child(1)'
+    _serie_css_selector = '.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)'
+    _current_css_selector = _movie_css_selector
+    try:
+        if is_series:
+            _current_css_selector = _serie_css_selector
+        ul = _soup.select_one(_current_css_selector)
+        items = ul.find_all("li")
+        for item in items:
+            _actors.append(item.text)
+    except AttributeError:
+        try:
+            ul = _soup.select_one(
+                '.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(1) > div:nth-child(2) > ul:nth-child(1)')
+            items = ul.find_all("li")
+            for item in items:
+                _actors.append(item.text)
+        except AttributeError:
+            return 'NA'
+    return ', '.join(_actors)
+
+
+def get_series_years(_soup):
+    try:
+        _year = (_soup.select_one(
+            '.TitleBlockMetaData__MetaDataList-sc-12ein40-0 > li:nth-child(2)').text).strip()
+        return _year[:len(_year) // 2]
     except AttributeError:
         return 'NA'
 
 
-def get_year(_soup):
-    _year = (_soup.select_one(
-        '.TitleBlockMetaData__MetaDataList-sc-12ein40-0 > li:nth-child(2)').text).strip()
-    return _year[:len(_year)//2]
+def get_genres(_media_info, _soup):
+    _genres = []
+    _flag = False
+    try:
+        _genres = ', '.join(_media_info['genres'])
+        return _genres
+    except KeyError:
+        try:
+            ul = _soup.select_one(
+                'ul.ipc-metadata-list:nth-child(4) > li:nth-child(1) > div:nth-child(2)')
+            items = ul.find_all("li")
+            for item in items:
+                if len(item.text) > 12 or '"' in item.text:
+                    _flag = True
+                _genres.append(item.text)
+            if _flag:
+                _genres = []
+                try:
+                    ul = _soup.select_one(
+                        'ul.ipc-metadata-list:nth-child(4) > li:nth-child(2) > div:nth-child(2)')
+                    items = ul.find_all("li")
+                    for item in items:
+                        _genres.append(item.text)
+                except AttributeError:
+                    return 'NA'
+            return ', '.join(_genres)
+        except AttributeError:
+            return 'NA'
 
 
-def get_details(_link):
-    print(_link)
+def get_voters(_media_info, _soup):
+    try:
+        _voters = int(_media_info['aggregateRating']['ratingCount'])
+        return _voters
+    except KeyError:
+        try:
+            _div = _soup.select_one(
+                'ul.ipc-metadata-list:nth-child(4) > li:nth-child(2) > div:nth-child(2)')
+            _voters = int(_div.text)
+            return _voters
+        except AttributeError:
+            return 'NA'
 
-    is_series = False
-    seasons = 'NA'
-    imdb_info = []
 
+def get_release_date(_media_info, _soup):
+    _release_date = 'NA'
+    try:
+        _release_date = _media_info['datePublished']
+    except KeyError:
+        try:
+            _div = _soup.select_one(
+                '.TitleBlockMetaData__MetaDataList-sc-12ein40-0 > li:nth-child(1) > a:nth-child(1)')
+            _release_date = _div.text
+        except AttributeError:
+            return _release_date
+    return _release_date
+
+
+def get_rated(_media_info, _soup):
+    _rated = 'NA'
+    try:
+        _rated = _media_info['contentRating']
+    except KeyError:
+        try:
+            _div = _soup.select_one(
+                'ul.ipc-inline-list--show-dividers:nth-child(2) > li:nth-child(3) > a:nth-child(1)')
+            _rated = _div.text
+        except AttributeError:
+            return _rated
+    return _rated
+
+
+def get_media_info(_link, _sleep_timer=100):
     soup = get_html(_link)
+    if not soup:
+        return False
     _script = soup.find('script', type='application/ld+json')
     _script = str(_script).replace(
         '</script>', '').replace('<script type="application/ld+json">', '')
+    try:
+        media_info = json.loads(_script)
 
-    media_info = json.loads(_script)
+        return soup, media_info
+    except json.decoder.JSONDecodeError:
+        _sleep_timer += 20
+        if _sleep_timer >= 250:
+            return False
+        print(f'get_media_info sleep for {_sleep_timer / 60} min, {_link}')
+        time.sleep(_sleep_timer)
+        get_media_info(_link, _sleep_timer)
 
+
+def get_details(_link):
     imdb_id = get_imdb_id(_link)
-    title = clean_text(media_info['name'])
     try:
-        score = media_info['aggregateRating']['ratingValue']
-    except KeyError:
-        score = 'NA'
-    try:
-        plot = clean_text(media_info['description'])
-    except KeyError:
-        plot = 'NA'
-    try:
-        rated = media_info['contentRating']
-        voters = media_info['aggregateRating']['ratingCount']
-    except KeyError:
-        rated = 'NA'
-        voters = 'NA'
-    genres = ', '.join(media_info['genre'])
-    try:
-        release_date = media_info['datePublished']
-    except KeyError:
-        release_date = 'NA'
+        soup, media_info = get_media_info(_link)
+    except TypeError:
+        return False
+    if not media_info:
+        return False
+    media_type = media_info['@type']
+    if 'TVEpisode' in media_type:
+        print(f'{imdb_id}: {media_type} Skipped')
+        return False
+    seasons = 'NA'
+    title = get_title(soup)
+    original_title = clean_text(media_info['name'])
+    voters = get_voters(media_info, soup)
+    rated = get_rated(media_info, soup)
+    release_date = get_release_date(media_info, soup)
     poster = get_poster(media_info)
-    imdb_info.append({'title': title})
-    imdb_info.append({'score': score})
-    imdb_info.append({'voters': voters})
-    imdb_info.append({'plot': plot})
-    imdb_info.append({'poster': poster})
+    countries = get_countries(soup)
+    score = get_score(media_info)
+    plot = get_plot(media_info)
+    genre = get_genres(media_info, soup)
 
-    type = media_info['@type']
-    match type:
+    match media_type:
         case 'TVSeries':
-            try:
-                creators = get_creators(media_info['creator'])
-            except KeyError:
-                creators = 'NA'
+            media_type = 'TV Series'
+            actors = get_actors(soup, True)
             seasons = get_seasons(soup)
             runtime = get_series_runtime(soup)
-            years = get_year(soup)
+            years = get_series_years(soup)
+            try:
+                creator = clean_creator(media_info['creators'])
+            except KeyError:
+                creator = get_creators(soup)
+            if release_date == 'NA':
+                if years != 'NA':
+                    release_date = years.split('-')[0]
 
-            insertion_details = CURSOR.execute(
-                f'INSERT INTO serie_details VALUES ("{imdb_id}", "{title}" , "{score}", "{voters}", "{plot}", "{poster}", "{creators}"'
-                f', "{rated}", "{runtime}", "{genres}", "{years}", "{type}", "{seasons}", "{release_date}")')
-
+            imdb_serie = ImdbSerie(imdb_id, title, original_title, score, voters, plot, poster,
+                                   rated, genre, media_type, release_date, countries, actors, creator, runtime, years,
+                                   seasons)
+            return imdb_serie
         case 'Movie':
+            actors = get_actors(soup)
             try:
-                directors = get_creators(media_info['director'])
+                director = clean_creator(media_info['directors'])
             except KeyError:
-                directors = 'NA'
+                director = get_creators(soup)
             try:
-                duration = media_info['duration']
+                runtime = media_info['duration'].replace(
+                    'PT', '').replace('H', 'h').replace('M', 'm').lower()
             except KeyError:
-                duration = 'NA'
-            insertion_details = CURSOR.execute(
-                f'INSERT INTO movie_details VALUES ("{imdb_id}", "{title}" , "{score}", "{voters}", "{plot}", "{poster}", "{directors}"'
-                f', "{rated}", "{duration}", "{genres}", "{type}", "{release_date}")')
+                runtime = 'NA'
+            imdb_movie = ImdbMovie(imdb_id, title, original_title, score, voters, plot,
+                                   poster, rated, genre, media_type, release_date, countries, actors, director, runtime)
+            return imdb_movie
+        case _:
+            return False
 
-    CONNECTION.commit()
-    print(f'{title} Added to database')
 
-    return insertion_details
+def insert_serie(imdb_serie):
+    try:
+
+        _cursor = CONNECTION.cursor()
+        _insert_command = f"""INSERT INTO serie_details VALUES 
+                            ("{imdb_serie.imdb_id}", "{imdb_serie.title}", "{imdb_serie.original_title}", "{imdb_serie.score}", 
+                            "{imdb_serie.voters}", "{imdb_serie.plot}", "{imdb_serie.poster}", "{imdb_serie.rated}", 
+                            "{imdb_serie.genre}", "{imdb_serie.media_type}", "{imdb_serie.release_date}", "{imdb_serie.countries}", "{imdb_serie.actors}", 
+                            "{imdb_serie.creator}", "{imdb_serie.runtime}", "{imdb_serie.years}", "{imdb_serie.seasons}")"""
+        insertion_details = _cursor.execute(_insert_command)
+        CONNECTION.commit()
+        _cursor.close()
+        return insertion_details
+    except sqlite3.Error as e:
+        print(_insert_command)
+        print(e)
+
+
+def insert_movie(imdb_movie):
+    try:
+        _cursor = CONNECTION.cursor()
+        _insert_command = f"""INSERT INTO movie_details VALUES 
+                            ("{imdb_movie.imdb_id}", "{imdb_movie.title}", "{imdb_movie.original_title}", "{imdb_movie.score}", 
+                            "{imdb_movie.voters}", "{imdb_movie.plot}", "{imdb_movie.poster}", "{imdb_movie.rated}", 
+                            "{imdb_movie.genre}", "{imdb_movie.media_type}", "{imdb_movie.release_date}", "{imdb_movie.countries}", 
+                            "{imdb_movie.actors}", "{imdb_movie.director}", "{imdb_movie.runtime}")"""
+        insertion_details = _cursor.execute(_insert_command)
+        CONNECTION.commit()
+        _cursor.close()
+        return insertion_details
+    except sqlite3.Error as e:
+        print(_insert_command)
+        print(e)
 
 
 def show_all():
@@ -306,96 +540,159 @@ def show_all():
 
 
 def mongodb_format():
+    _cursor = CONNECTION.cursor()
     # This enables column access by name: row['column_name']
     CONNECTION.row_factory = sqlite3.Row
-    _rows = CURSOR.execute(
+    _rows = _cursor.execute(
         f''' SELECT * from movie_details inner join serie_details on movie_details.title = serie_details.title''').fetchall()
     CONNECTION.commit()
     with open('data.json', 'a+') as outfile:
         for _row in _rows:
             imdb_movie = dict(
-                (CURSOR.description[i][0], value) for i, value in enumerate(_row))
+                (_cursor.description[i][0], value) for i, value in enumerate(_row))
             imdb_movie['_class'] = 'com.back_sync.models.Imdb'
             json.dump(imdb_movie, outfile)
             outfile.write('\n')
+    _cursor.close()
 
 
 def get_json_data(_imdb_id):
+    _cursor = CONNECTION.cursor()
     # This enables column access by name: row['column_name']
     CONNECTION.row_factory = sqlite3.Row
-    _rows = CURSOR.execute(
+    _rows = _cursor.execute(
         f''' SELECT * from details where imdb_id = "{_imdb_id}" ''').fetchall()
     CONNECTION.commit()
+    _cursor.close()
     return [dict(_row) for _row in _rows]  # CREATE JSON
 
 
 def delete_item_by_id(_imdb_id):
+    _cursor = CONNECTION.cursor()
     # This enables column access by name: row['column_name']
     CONNECTION.row_factory = sqlite3.Row
-    _rows = CURSOR.execute(
+    _rows = _cursor.execute(
         f''' delete from details where imdb_id = "{_imdb_id}" ''')
     CONNECTION.commit()
-    print(f'{_imdb_id} deleted')
+    if _rows:
+        print(f'{_imdb_id} deleted')
+    _cursor.close()
 
 
-def main():
-    imdb_base_path = 'https://www.imdb.com/title/'
-    ids = ['tt0372784', 'tt1474684', 'tt1345836', 'tt0468569', 'tt0482571', 'tt1375666', 'tt0816692', 'tt4154756',
-           'tt3428912', 'tt2249364', 'tt2303687', 'tt7493974', 'tt2294189', 'tt4258440', 'tt3877200', 'tt5269594',
-           'tt4192812', 'tt0310455', 'tt3581932', 'tt1738419', 'tt0185906', 'tt5084170', 'tt5722190', 'tt0495027',
-           'tt13567480', 'tt10011298', 'tt0120669', 'tt2084970', 'tt0484855', 'tt0423661', 'tt6902676',
-           'tt3428912', 'tt8946378', 'tt0096633', 'tt3238856', 'tt3502172', 'tt1337672', 'tt0223897',
-           'tt0223897', 'tt0156887', 'tt0109040', 'tt2155025', 'tt3516878', 'tt1948563', 'tt0114469', 'tt0121955',
-           'tt2494280', 'tt0120237', 'tt1493239', 'tt0101761', 'tt0901487', 'tt0081874', 'tt0756683', 'tt11639414',
-           'tt0416394', 'tt0459159', 'tt1093357', 'tt1740299', 'tt2544316', 'tt2384811', 'tt0038032', 'tt0243017',
-           'tt0112230', 'tt2210479', 'tt2104011', 'tt9266104', 'tt6262096', 'tt5805470', 'tt0105946', 'tt0791205',
-           'tt7131720', 'tt7382936', 'tt2967286', 'tt3539986', 'tt0079944', 'tt0185906', 'tt0795176', 'tt1749004',
-           'tt8416494', 'tt2701582', 'tt8772296', 'tt6317068', 'tt4378376', 'tt5687612', 'tt5607976', 'tt7725422',
-           'tt7908628', 'tt8879940', 'tt7939766', 'tt5555260', 'tt0756683', 'tt11639414', 'tt9304350', 'tt11147852',
-           'tt8107988', 'tt7078180', 'tt0816398', 'tt1847445', 'tt8101850'
-           ]
-    more_ids = ['tt2164430', 'tt1305826', 'tt10937602', 'tt3742982', 'tt12331342', 'tt7653274', 'tt11714178',
-                'tt11754514', 'tt10885406', 'tt2560140', 'tt4378376', 'tt0981456', 'tt8515016', 'tt5348176',
-                'tt3032476', 'tt4270492', 'tt7441658', 'tt0434665', 'tt0903747', 'tt2578560', 'tt13192574',
-                'tt6548228', 'tt6517102', 'tt8673610', 'tt12150836', 'tt7263380', 'tt0213338', 'tt7865090',
-                'tt11405390', 'tt12443322', 'tt9335498', 'tt11656892', 'tt8314920', 'tt9679542', 'tt10011298',
-                'tt6866266', 'tt9307686', 'tt0863046', 'tt3551096', 'tt0944947', 'tt7661390', 'tt12350092',
-                'tt10479420', 'tt8690728', 'tt8225204', 'tt11680468', 'tt0209631', 'tt0948103', 'tt7806844',
-                'tt0495212', 'tt8253044', 'tt5607976', 'tt0478838', 'tt3306838', 'tt9004082', 'tt11295582', 'tt0385426',
-                'tt2674806', 'tt0472954', 'tt12767982', 'tt12343534', 'tt9522300', 'tt10320398', 'tt3114390',
-                'tt2348803', 'tt3530232', 'tt0096633', 'tt10487750', 'tt6128254', 'tt2942218', 'tt12486080',
-                'tt5057130', 'tt5897304', 'tt12831098', 'tt5626028', 'tt0388629', 'tt4508902', 'tt1266020', 'tt6586318',
-                'tt7649694', 'tt5607616', 'tt3973820', 'tt2861424', 'tt9402026', 'tt3526078', 'tt7137906', 'tt2575988',
-                'tt10204658', 'tt8910922', 'tt0121955', 'tt0187664', 'tt8747928', 'tt5514358', 'tt7660850',
-                'tt10986410', 'tt9054364', 'tt4604612', 'tt1190634', 'tt3230854', 'tt12227418', 'tt6470478',
-                'tt4955642', 'tt5834204', 'tt3874528', 'tt6859260', 'tt8111088', 'tt5788792', 'tt0416394', 'tt12432936',
-                'tt5691552', 'tt8788458', 'tt9529546', 'tt0141842', 'tt0327386', 'tt1312171', 'tt0306414', 'tt2432604',
-                'tt5057054', 'tt12057106', 'tt2356777', 'tt12464182', 'tt1759761', 'tt10233448', 'tt9140560',
-                'tt11785582', 'tt8679236', 'tt3950102', 'tt0500092', 'tt9140560',
-                'tt9307686', 'tt9304350', 'tt10479420', 'tt11008522', 'tt10470444', 'tt9335498', 'tt8000674',
-                'tt10981954', 'tt12361974'
-                ]
+def seed_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
-    #id_test = ['tt1345836', 'tt0482571', 'tt1375666', 'tt2084970', 'tt0756683']
-    id_test = ['tt3877200']
 
-    loop_counter = 1
+def shuffle_list(_list_to_shuffle):
+    _seed = seed_generator()
+    random.seed(_seed)
+    random.shuffle(_list_to_shuffle)
+    return _list_to_shuffle
+
+
+def temp_id_list():
+    _cursor = CONNECTION.cursor()
+    query = f'SELECT imdb_id FROM movie_details'
+    movies_id = _cursor.execute(query).fetchall()
+    CONNECTION.commit()
+    _cursor.close()
+
+    _cursor = CONNECTION.cursor()
+    query = f'SELECT imdb_id FROM serie_details'
+    series_id = _cursor.execute(query).fetchall()
+    CONNECTION.commit()
+    _cursor.close()
+    result = movies_id + series_id
+    with open('db_ids.txt', 'w', encoding='utf-8') as file:
+        strint_to_write = ", ".join(str(f'"{item[0]}"') for item in result)
+        file.write(f'[{strint_to_write}]')
+        write_imdb_id(ast.literal_eval(f'[{strint_to_write}]'))
+
+
+def single_scrape(imdb_id):
+    global CONNECTION
+    CONNECTION = sqlite3.connect(DATABASE_LOCATION)
     set_up_database()
-    ids.extend(more_ids)
-    for imdb_id in ids:
-        print(f'{loop_counter}/{len(ids)}')
+    imdb_base_path = 'https://www.imdb.com/title/'
+    details = get_details(f'{imdb_base_path}{imdb_id}')
+    if details:
+        try:
+            match details.type:
+                case 'TV Series':
+                    insertion_details = insert_serie(details)
+                case 'Movie':
+                    insertion_details = insert_movie(details)
+                case _:
+                    print('Unknown type', details.type)
+        except AttributeError:
+            print('AttributeError')
+        if insertion_details:
+            print(f'{details.title} Added to database')
+    CONNECTION.close()
+
+
+def main(imdb_ids):
+    global CONNECTION
+
+    imdb_base_path = 'https://www.imdb.com/title/'
+    # id_test = ['tt1345836', 'tt0482571', 'tt1375666', 'tt2084970', 'tt0756683']
+    # id_test = ['tt0002610', 'tt0372784', 'tt0903747']
+    # id_test = ['tt0029501']
+    loop_counter = 1
+    _movies_added = 0
+    _series_added = 0
+    _database_counter = 0
+    _programe_pause_counter = 0
+    _list_original_lenght = len(imdb_ids)
+    set_up_database()
+    for imdb_id in imdb_ids[:]:
+        insertion_details = False
+        if _programe_pause_counter >= 1000:
+            print('Program paused for 2 min')
+            time.sleep(120)
+            print('Program restarting')
+            _programe_pause_counter = 0
+        if _database_counter >= 20:
+            write_imdb_id(imdb_ids)
+            CONNECTION.close()
+            CONNECTION = sqlite3.connect(DATABASE_LOCATION)
+            _database_counter = 0
+
+        start_time = time.time()
+        print(imdb_id)
+        print(f'{loop_counter}/{_list_original_lenght} - movies added: {_movies_added}, series added: {_series_added}')
         _item = check_item_exists(imdb_id)
         if _item:
             print(f'{_item} found')
+            imdb_ids.remove(imdb_id)
         else:
-            get_details(f'{imdb_base_path}{imdb_id}')
+            details = get_details(f'{imdb_base_path}{imdb_id}')
+            if details:
+                match details.media_type:
+                    case 'TV Series':
+                        insertion_details = insert_serie(details)
+                        _series_added += 1
+                        _programe_pause_counter += 1
+                    case 'Movie':
+                        insertion_details = insert_movie(details)
+                        _movies_added += 1
+                        _programe_pause_counter += 1
+                    case _:
+                        print('Unknown type', details.type)
+            else:
+                imdb_ids.remove(imdb_id)
+
+            if insertion_details:
+                print(f'{details.title} Added to database')
+                imdb_ids.remove(imdb_id)
+
         loop_counter += 1
-    show_all()
-    browser.quit()
+        _database_counter += 1
+        print(f"--- {(time.time() - start_time)} seconds ---")
 
 
 if __name__ == '__main__':
-    main()
-    mongodb_format()
-
+    imdb_ids = get_imdb_ids_dump()
+    main(shuffle_list(imdb_ids))
+    # temp_id_list()
     CONNECTION.close()
