@@ -77,27 +77,74 @@ def get_imdb_id(_link):
 
 
 def get_countries(_soup):
-    try:
-        countries = re.search(
-            '(?<=\"countriesOfOrigin\":{\"countries\":)(.*)(?=,\"__typename\":\"CountriesOfOrigin\"},\"detailsExternalLinks\")',
-            str(_soup)).group(1)
-    except AttributeError:
-        return 'NA'
-    try:
-        countries = ast.literal_eval(countries)
-    except SyntaxError:
-        countries = countries.split(']')[0]
-        countries = str(f'{countries}' + ']')
-        countries = ast.literal_eval(countries)
-
     clean_countries = []
-    try:
-        for country in countries:
-            clean_countries.append(country['text'])
-    except KeyError:
-        for country in countries:
-            clean_countries.append(country['id'])
-
+    _css_selectors = ['section.ipc-page-section:nth-child(28) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                      'section.ipc-page-section:nth-child(32) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                      'section.ipc-page-section:nth-child(33) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                      'section.ipc-page-section:nth-child(34) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                      'section.ipc-page-section:nth-child(35) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                      'section.ipc-page-section:nth-child(36) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                      'section.ipc-page-section:nth-child(37) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                      'section.ipc-page-section:nth-child(40) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                      'section.ipc-page-section:nth-child(41) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                        'section.ipc-page-section:nth-child(44) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                        'section.ipc-page-section:nth-child(45) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)',
+                        'section.ipc-page-section:nth-child(46) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)'
+                        
+                        ]
+    for _css_selector in _css_selectors:
+        try:
+            clean_countries = []
+            ul = _soup.select_one(_css_selector)
+            items = ul.find_all("li")
+            for item in items:
+                clean_countries.append(item.text)
+            if 'Color' in clean_countries or 'Black and White' in clean_countries or '$' in clean_countries[0]:
+                clean_countries = ['NA']
+                continue
+        except AttributeError:
+            clean_countries = []
+            continue
+    if 'NA' in clean_countries or not clean_countries:
+        try:
+            countries = re.search(
+                '(?<=\"countriesOfOrigin\":{\"countries\":)(.*)(?=,\"__typename\":\"CountriesOfOrigin\"},\"detailsExternalLinks\")',
+                str(_soup)).group(1)
+            countries = ast.literal_eval(countries)
+            for country in countries:
+                clean_countries.append(country['text'])
+        except AttributeError:
+            clean_countries = ['NA']
+        except SyntaxError:
+            countries = re.search(
+                '(?<=\"countriesOfOrigin\":{\"countries\":)(.*)(?=,\"__typename\":\"CountryOfOrigin\")',
+                str(countries)).group(1)
+            
+            countries = str(f'{countries}' + '}]')
+            """print('#######################################################################')
+            print('countries', countries)
+            print('#######################################################################')"""
+            try:
+                countries = ast.literal_eval(countries)
+            except SyntaxError:
+                countries = re.search(
+                '(?<=\"countriesOfOrigin\":{\"countries\":)(.*)(?=\])',
+                str(countries)).group(1)
+                countries = str(f'{countries}' + ']')
+            try:
+                countries = ast.literal_eval(str(countries))
+                for country in countries:
+                    clean_countries.append(country['text'])
+            except KeyError:
+                clean_countries = ['NA']
+            except TypeError:
+                print('TypeError countries', countries)
+                raise Exception('TypeError')
+            except SyntaxError:
+                print('SyntaxError countries', countries)
+                raise Exception('SyntaxError')
+    if not clean_countries:
+        clean_countries = ['NA']
     return ', '.join(clean_countries)
 
 
@@ -385,7 +432,9 @@ def get_voters(_media_info, _soup):
             return _voters
         except AttributeError:
             return 'NA'
-
+        except ValueError:
+            return 'NA'
+        
 
 def get_release_date(_media_info, _soup):
     _release_date = 'NA'
@@ -637,7 +686,7 @@ def main(imdb_ids):
     imdb_base_path = 'https://www.imdb.com/title/'
     # id_test = ['tt1345836', 'tt0482571', 'tt1375666', 'tt2084970', 'tt0756683']
     # id_test = ['tt0002610', 'tt0372784', 'tt0903747']
-    # id_test = ['tt0029501']
+    id_test = ['tt1830516']
     loop_counter = 1
     _movies_added = 0
     _series_added = 0
@@ -693,6 +742,6 @@ def main(imdb_ids):
 
 if __name__ == '__main__':
     imdb_ids = get_imdb_ids_dump()
-    main(shuffle_list(imdb_ids))
+    main(imdb_ids)
     # temp_id_list()
     CONNECTION.close()

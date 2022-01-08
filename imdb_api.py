@@ -28,7 +28,7 @@ async def database_disconnect():
 
 @app.get("/")
 async def fetch_data():
-    query = f"SELECT * FROM {MOVIES_TABLE} WHERE voters > 10000 and countries NOT LIKE 'IN%' ORDER BY score DESC, voters DESC LIMIT 200"
+    query = f"SELECT * FROM {MOVIES_TABLE} ORDER BY voters DESC, score DESC LIMIT 200"
     results = await REDDIT_GOALS_DB.fetch_all(query=query)
 
     return results
