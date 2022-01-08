@@ -302,14 +302,21 @@ def get_plot(_media_info):
 
 def get_creators(_soup):
     _creators = []
-    try:
-        ul = _soup.select_one(
-            '.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(1) > div:nth-child(2) > ul:nth-child(1)')
-        items = ul.find_all("li")
-        for item in items:
-            _creators.append(item.text)
-    except AttributeError:
-        return 'NA'
+    _css_selectors = ['.PrincipalCredits__PrincipalCreditsPanelWideScreen-sc-hdn81t-0 > ul:nth-child(1) > li:nth-child(1) > div:nth-child(2) > ul:nth-child(1)',
+                      '.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(1) > div:nth-child(2) > ul:nth-child(1)',
+                      ]
+    for _css_selector in _css_selectors:
+        try:
+            _creators = []
+            ul = _soup.select_one(_css_selector)
+            li = ul.find_all("li")
+            for item in li:
+                a = item.find('a')
+                _creators.append(a.text)
+            return ', '.join(_creators)
+        except AttributeError:
+            _creators = ['NA']
+            continue
     return ', '.join(_creators)
 
 
@@ -357,27 +364,38 @@ def get_series_runtime(_soup):
     return _runtime.strip()
 
 
+def _get_actors_helper(_soup, _css_selector):
+    _actors = []
+    ul = _soup.select_one(_css_selector)
+    li = ul.find_all("li")
+    for item in li:
+        a = item.find('a')
+        _actors.append(a.text)
+    return _actors
+
+
 def get_actors(_soup, is_series=False):
     _actors = []
-    _movie_css_selector = '.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(3) > div:nth-child(2) > ul:nth-child(1)'
+    _movie_css_selectors = ['.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(1) > div:nth-child(2) > ul:nth-child(1)',
+                            '.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(3) > div:nth-child(2) > ul:nth-child(1)', 
+                           '.PrincipalCredits__PrincipalCreditsPanelWideScreen-sc-hdn81t-0 > ul:nth-child(1) > li:nth-child(3) > div:nth-child(2) > ul:nth-child(1)',
+                           '.PrincipalCredits__PrincipalCreditsPanelWideScreen-sc-hdn81t-0 > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)'
+                           ]
+    
     _serie_css_selector = '.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > ul:nth-child(1)'
-    _current_css_selector = _movie_css_selector
-    try:
-        if is_series:
-            _current_css_selector = _serie_css_selector
-        ul = _soup.select_one(_current_css_selector)
-        items = ul.find_all("li")
-        for item in items:
-            _actors.append(item.text)
-    except AttributeError:
+    if is_series:
         try:
-            ul = _soup.select_one(
-                '.PrincipalCredits__PrincipalCreditsPanelWideScreen-hdn81t-0 > ul:nth-child(1) > li:nth-child(1) > div:nth-child(2) > ul:nth-child(1)')
-            items = ul.find_all("li")
-            for item in items:
-                _actors.append(item.text)
+            _actors = _get_actors_helper(_soup, _serie_css_selector)
+            return ', '.join(_actors)
         except AttributeError:
-            return 'NA'
+            return ['NA']
+    for _css_selector in _movie_css_selectors:
+        try:
+            _actors = _get_actors_helper(_soup, _css_selector)
+            return ', '.join(_actors)
+        except AttributeError:
+            _actors = ['NA']
+            continue
     return ', '.join(_actors)
 
 
@@ -686,7 +704,7 @@ def main(imdb_ids):
     imdb_base_path = 'https://www.imdb.com/title/'
     # id_test = ['tt1345836', 'tt0482571', 'tt1375666', 'tt2084970', 'tt0756683']
     # id_test = ['tt0002610', 'tt0372784', 'tt0903747']
-    id_test = ['tt1830516']
+    id_test = ['tt0172495', 'tt0107290', 'tt0046912']
     loop_counter = 1
     _movies_added = 0
     _series_added = 0
