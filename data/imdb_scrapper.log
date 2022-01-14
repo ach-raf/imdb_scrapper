@@ -1,0 +1,888 @@
+INFO:root:movie_details table found
+INFO:root:serie_details table found
+INFO:root:tt0000001
+INFO:root:1/210717 - movies added: 0, series added: 0
+INFO:root:movie_details table found
+INFO:root:serie_details table found
+INFO:root:tt0000001
+INFO:root:1/210717 - movies added: 0, series added: 0
+INFO:root:Carmencita Added to database
+INFO:root:--- 1.4663279056549072 seconds ---
+INFO:root:tt0000002
+INFO:root:2/210717 - movies added: 1, series added: 0
+INFO:root:Le clown et ses chiens Added to database
+INFO:root:--- 1.6375656127929688 seconds ---
+INFO:root:tt0000003
+INFO:root:3/210717 - movies added: 2, series added: 0
+INFO:root:Pauvre Pierrot Added to database
+INFO:root:--- 1.560915470123291 seconds ---
+INFO:root:tt0000004
+INFO:root:4/210717 - movies added: 3, series added: 0
+INFO:root:Un bon bock Added to database
+INFO:root:--- 1.5936942100524902 seconds ---
+INFO:root:tt0000005
+INFO:root:5/210717 - movies added: 4, series added: 0
+INFO:root:Blacksmith Scene Added to database
+INFO:root:--- 1.8812832832336426 seconds ---
+INFO:root:tt0000006
+INFO:root:6/210717 - movies added: 5, series added: 0
+INFO:root:Chinese Opium Den Added to database
+INFO:root:--- 1.6826236248016357 seconds ---
+INFO:root:tt0000007
+INFO:root:7/210717 - movies added: 6, series added: 0
+INFO:root:Corbett and Courtney Before the Kinetograph Added to database
+INFO:root:--- 1.8709628582000732 seconds ---
+INFO:root:tt0000008
+INFO:root:8/210717 - movies added: 7, series added: 0
+INFO:root:Edison Kinetoscopic Record of a Sneeze Added to database
+INFO:root:--- 1.7467682361602783 seconds ---
+INFO:root:tt0000009
+INFO:root:9/210717 - movies added: 8, series added: 0
+INFO:root:Miss Jerry Added to database
+INFO:root:--- 1.8949978351593018 seconds ---
+INFO:root:tt0000010
+INFO:root:10/210717 - movies added: 9, series added: 0
+INFO:root:La sortie de lusine Lumière à Lyon Added to database
+INFO:root:--- 1.7912828922271729 seconds ---
+INFO:root:tt0000011
+INFO:root:11/210717 - movies added: 10, series added: 0
+INFO:root:Akrobatisches Potpourri Added to database
+INFO:root:--- 1.7505183219909668 seconds ---
+INFO:root:tt0000012
+INFO:root:12/210717 - movies added: 11, series added: 0
+INFO:root:Larrivée dun train à La Ciotat Added to database
+INFO:root:--- 1.9916791915893555 seconds ---
+INFO:root:tt0000013
+INFO:root:13/210717 - movies added: 12, series added: 0
+INFO:root:Le débarquement du congrès de photographie à Lyon Added to database
+INFO:root:--- 1.748659610748291 seconds ---
+INFO:root:tt0000014
+INFO:root:14/210717 - movies added: 13, series added: 0
+INFO:root:Larroseur arrosé Added to database
+INFO:root:--- 1.7058587074279785 seconds ---
+INFO:root:tt0000015
+INFO:root:15/210717 - movies added: 14, series added: 0
+INFO:root:Autour dune cabine Added to database
+INFO:root:--- 1.9706275463104248 seconds ---
+INFO:root:tt0000016
+INFO:root:16/210717 - movies added: 15, series added: 0
+INFO:root:Barque sortant du port Added to database
+INFO:root:--- 2.0570592880249023 seconds ---
+INFO:root:tt0000017
+INFO:root:17/210717 - movies added: 16, series added: 0
+INFO:root:Italienischer Bauerntanz Added to database
+INFO:root:--- 3.973905324935913 seconds ---
+INFO:root:tt0000018
+INFO:root:18/210717 - movies added: 17, series added: 0
+INFO:root:Das boxende Känguruh Added to database
+INFO:root:--- 1.8935766220092773 seconds ---
+INFO:root:tt0000019
+INFO:root:19/210717 - movies added: 18, series added: 0
+INFO:root:The Clown Barber Added to database
+INFO:root:--- 1.6382319927215576 seconds ---
+INFO:root:tt0000020
+INFO:root:20/210717 - movies added: 19, series added: 0
+INFO:root:The Derby 1895 Added to database
+INFO:root:--- 1.6715283393859863 seconds ---
+INFO:root:tt0000022
+INFO:root:21/210717 - movies added: 20, series added: 0
+INFO:root:Les forgerons Added to database
+INFO:root:--- 1.6920745372772217 seconds ---
+INFO:root:tt0000023
+INFO:root:22/210717 - movies added: 21, series added: 0
+INFO:root:Baignade en mer Added to database
+INFO:root:--- 1.5957136154174805 seconds ---
+INFO:root:tt0000024
+INFO:root:23/210717 - movies added: 22, series added: 0
+INFO:root:Opening of the Kiel Canal Added to database
+INFO:root:--- 1.626262903213501 seconds ---
+INFO:root:tt0000025
+INFO:root:24/210717 - movies added: 23, series added: 0
+INFO:root:The Oxford and Cambridge University Boat Race Added to database
+INFO:root:--- 1.7925167083740234 seconds ---
+INFO:root:tt0000026
+INFO:root:25/210717 - movies added: 24, series added: 0
+INFO:root:Partie décarté Added to database
+INFO:root:--- 1.872178554534912 seconds ---
+INFO:root:tt0000027
+INFO:root:26/210717 - movies added: 25, series added: 0
+INFO:root:Place des Cordeliers à Lyon Added to database
+INFO:root:--- 1.9259366989135742 seconds ---
+INFO:root:tt0000028
+INFO:root:27/210717 - movies added: 26, series added: 0
+INFO:root:La pêche aux poissons rouges Added to database
+INFO:root:--- 1.8051462173461914 seconds ---
+INFO:root:tt0000029
+INFO:root:28/210717 - movies added: 27, series added: 0
+INFO:root:Repas de bébé Added to database
+INFO:root:--- 1.7371327877044678 seconds ---
+INFO:root:tt0000030
+INFO:root:29/210717 - movies added: 28, series added: 0
+INFO:root:Rough Sea at Dover Added to database
+INFO:root:--- 1.8445658683776855 seconds ---
+INFO:root:tt0000031
+INFO:root:30/210717 - movies added: 29, series added: 0
+INFO:root:Le saut à la couverture Added to database
+INFO:root:--- 2.0080044269561768 seconds ---
+INFO:root:tt0000032
+INFO:root:31/210717 - movies added: 30, series added: 0
+INFO:root:Die Serpentintänzerin Added to database
+INFO:root:--- 1.8368051052093506 seconds ---
+INFO:root:tt0000033
+INFO:root:32/210717 - movies added: 31, series added: 0
+INFO:root:La voltige Added to database
+INFO:root:--- 1.634004831314087 seconds ---
+INFO:root:tt0000034
+INFO:root:33/210717 - movies added: 32, series added: 0
+INFO:root:Arrivée dun train gare de Vincennes Added to database
+INFO:root:--- 2.2182083129882812 seconds ---
+INFO:root:tt0000035
+INFO:root:34/210717 - movies added: 33, series added: 0
+INFO:root:Larroseur Added to database
+INFO:root:--- 2.044964551925659 seconds ---
+INFO:root:tt0000036
+INFO:root:35/210717 - movies added: 34, series added: 0
+INFO:root:Awakening of Rip Added to database
+INFO:root:--- 1.906585931777954 seconds ---
+INFO:root:tt0000037
+INFO:root:36/210717 - movies added: 35, series added: 0
+INFO:root:Baignade en mer Added to database
+INFO:root:--- 1.5488085746765137 seconds ---
+INFO:root:tt0000038
+INFO:root:37/210717 - movies added: 36, series added: 0
+INFO:__main__:movie_details table found
+INFO:__main__:serie_details table found
+INFO:__main__:tt0000042
+INFO:__main__:1/210677 - movies added: 0, series added: 0
+INFO:__main__:Bateau-mouche sur la Seine found
+INFO:__main__:--- 0.0009694099426269531 seconds ---
+INFO:__main__:tt0000043
+INFO:__main__:2/210677 - movies added: 0, series added: 0
+INFO:__main__:Batteuse à vapeur found
+INFO:__main__:--- 0.0005309581756591797 seconds ---
+INFO:__main__:tt0000044
+INFO:__main__:3/210677 - movies added: 0, series added: 0
+INFO:__main__:Le bivouac found
+INFO:__main__:--- 0.0004990100860595703 seconds ---
+INFO:__main__:tt0000045
+INFO:__main__:4/210677 - movies added: 0, series added: 0
+INFO:__main__:Les blanchisseuses Added to database
+INFO:__main__:--- 3.303415298461914 seconds ---
+INFO:__main__:tt0000046
+INFO:__main__:5/210677 - movies added: 1, series added: 0
+INFO:__main__:Bois de Boulogne Added to database
+INFO:__main__:--- 1.5165297985076904 seconds ---
+INFO:__main__:tt0000047
+INFO:__main__:6/210677 - movies added: 2, series added: 0
+INFO:__main__:Boulevard des Italiens Added to database
+INFO:__main__:--- 1.4508700370788574 seconds ---
+INFO:__main__:tt0000048
+INFO:__main__:7/210677 - movies added: 3, series added: 0
+INFO:__main__:The Boxing Kangaroo Added to database
+INFO:__main__:--- 1.7269275188446045 seconds ---
+INFO:__main__:tt0000049
+INFO:__main__:8/210677 - movies added: 4, series added: 0
+INFO:__main__:Boxing Match or, Glove Contest Added to database
+INFO:__main__:--- 2.1801507472991943 seconds ---
+INFO:__main__:tt0000050
+INFO:__main__:9/210677 - movies added: 5, series added: 0
+INFO:__main__:movie_details table found
+INFO:__main__:serie_details table found
+INFO:__main__:tt0000042
+INFO:__main__:1/210677 - movies added: 0, series added: 0
+INFO:__main__:Bateau-mouche sur la Seine found
+INFO:__main__:--- 0.0005276203155517578 seconds ---
+INFO:__main__:tt0000043
+INFO:__main__:2/210677 - movies added: 0, series added: 0
+INFO:__main__:Batteuse à vapeur found
+INFO:__main__:--- 0.0004971027374267578 seconds ---
+INFO:__main__:tt0000044
+INFO:__main__:3/210677 - movies added: 0, series added: 0
+INFO:__main__:Le bivouac found
+INFO:__main__:--- 0.0004992485046386719 seconds ---
+INFO:__main__:tt0000045
+INFO:__main__:4/210677 - movies added: 0, series added: 0
+INFO:__main__:Les blanchisseuses found
+INFO:__main__:--- 0.0005006790161132812 seconds ---
+INFO:__main__:tt0000046
+INFO:__main__:5/210677 - movies added: 0, series added: 0
+INFO:__main__:Bois de Boulogne found
+INFO:__main__:--- 0.0004992485046386719 seconds ---
+INFO:__main__:tt0000047
+INFO:__main__:6/210677 - movies added: 0, series added: 0
+INFO:__main__:Boulevard des Italiens found
+INFO:__main__:--- 0.001001119613647461 seconds ---
+INFO:__main__:tt0000048
+INFO:__main__:7/210677 - movies added: 0, series added: 0
+INFO:__main__:The Boxing Kangaroo found
+INFO:__main__:--- 0.0005257129669189453 seconds ---
+INFO:__main__:tt0000049
+INFO:__main__:8/210677 - movies added: 0, series added: 0
+INFO:__main__:Boxing Match or, Glove Contest found
+INFO:__main__:--- 0.0004975795745849609 seconds ---
+INFO:__main__:tt0000050
+INFO:__main__:9/210677 - movies added: 0, series added: 0
+INFO:__main__:Bébé et fillettes Added to database
+INFO:__main__:--- 1.7240231037139893 seconds ---
+INFO:__main__:tt0000051
+INFO:__main__:10/210677 - movies added: 1, series added: 0
+INFO:__main__:Campement de bohémiens Added to database
+INFO:__main__:--- 1.7448704242706299 seconds ---
+INFO:__main__:tt0000052
+INFO:__main__:11/210677 - movies added: 2, series added: 0
+INFO:__main__:Carga de rurales Added to database
+INFO:__main__:--- 1.815279245376587 seconds ---
+INFO:__main__:tt0000053
+INFO:__main__:12/210677 - movies added: 3, series added: 0
+INFO:__main__:A Chegada do Comboio Inaugural à Estação Central do Porto Added to database
+INFO:__main__:--- 1.46553373336792 seconds ---
+INFO:__main__:tt0000054
+INFO:__main__:13/210677 - movies added: 4, series added: 0
+INFO:__main__:Les chevaux de bois Added to database
+INFO:__main__:--- 1.4567513465881348 seconds ---
+INFO:__main__:tt0000055
+INFO:__main__:14/210677 - movies added: 5, series added: 0
+INFO:__main__:Le chiffonnier Added to database
+INFO:__main__:--- 1.4497261047363281 seconds ---
+INFO:__main__:tt0000056
+INFO:__main__:15/210677 - movies added: 6, series added: 0
+INFO:__main__:Uma Corrida de Touros no Campo Pequeno Added to database
+INFO:__main__:--- 1.6180870532989502 seconds ---
+INFO:__main__:tt0000057
+INFO:__main__:16/210677 - movies added: 7, series added: 0
+INFO:__main__:Cortège de tzar allant à Versailles Added to database
+INFO:__main__:--- 1.4267644882202148 seconds ---
+INFO:__main__:tt0000058
+INFO:__main__:17/210677 - movies added: 8, series added: 0
+INFO:__main__:Cortège de tzar au Bois de Boulogne Added to database
+INFO:__main__:--- 1.9259188175201416 seconds ---
+INFO:__main__:tt0000059
+INFO:__main__:18/210677 - movies added: 9, series added: 0
+INFO:__main__:Couronnement de la rosière Added to database
+INFO:__main__:--- 1.3945627212524414 seconds ---
+INFO:__main__:tt0000060
+INFO:__main__:19/210677 - movies added: 10, series added: 0
+INFO:__main__:Dancing Darkies Added to database
+INFO:__main__:--- 1.6539950370788574 seconds ---
+INFO:__main__:tt0000061
+INFO:__main__:20/210677 - movies added: 11, series added: 0
+INFO:__main__:Dancing Girls Added to database
+INFO:__main__:--- 1.5362977981567383 seconds ---
+INFO:__main__:tt0000062
+INFO:__main__:21/210677 - movies added: 12, series added: 0
+INFO:__main__:Danse serpentine Added to database
+INFO:__main__:--- 1.6630263328552246 seconds ---
+INFO:__main__:tt0000063
+INFO:__main__:22/210677 - movies added: 13, series added: 0
+INFO:__main__:Dessinateur express Added to database
+INFO:__main__:--- 1.462693452835083 seconds ---
+INFO:__main__:tt0000064
+INFO:__main__:23/210677 - movies added: 14, series added: 0
+INFO:__main__:movie_details table found
+INFO:__main__:serie_details table found
+INFO:__main__:tt0000062
+INFO:__main__:1/210657 - movies added: 0, series added: 0
+INFO:__main__:Danse serpentine found
+INFO:__main__:--- 0.0004999637603759766 seconds ---
+INFO:__main__:tt0000063
+INFO:__main__:2/210657 - movies added: 0, series added: 0
+INFO:__main__:Dessinateur express found
+INFO:__main__:--- 0.0009989738464355469 seconds ---
+INFO:__main__:tt0000064
+INFO:__main__:3/210657 - movies added: 0, series added: 0
+INFO:__main__:Dessinateur Chamberlain Added to database
+INFO:__main__:--- 1.5025818347930908 seconds ---
+INFO:__main__:tt0000065
+INFO:__main__:4/210657 - movies added: 1, series added: 0
+INFO:__main__:Dessinateur Reine Victoria Added to database
+INFO:__main__:--- 1.6224079132080078 seconds ---
+INFO:__main__:tt0000066
+INFO:__main__:5/210657 - movies added: 2, series added: 0
+INFO:__main__:Dessinateur Von Bismark Added to database
+INFO:__main__:--- 1.9979331493377686 seconds ---
+INFO:__main__:tt0000067
+INFO:__main__:6/210657 - movies added: 3, series added: 0
+INFO:__main__:Dix chapeaux en 60 secondes Added to database
+INFO:__main__:--- 1.4724581241607666 seconds ---
+INFO:__main__:tt0000068
+INFO:__main__:7/210657 - movies added: 4, series added: 0
+INFO:__main__:movie_details table found
+INFO:__main__:serie_details table found
+INFO:__main__:tt0000062
+INFO:__main__:1/210657 - movies added: 0, series added: 0
+INFO:__main__:movie_details table not found
+INFO:__main__:creating movie_details table
+INFO:__main__:serie_details table not found
+INFO:__main__:creating serie_details table
+INFO:__main__:tt0000062
+INFO:__main__:1/210657 - movies added: 0, series added: 0
+INFO:__main__:Danse serpentine Added to database
+INFO:__main__:--- 1.671398639678955 seconds ---
+INFO:__main__:tt0000063
+INFO:__main__:2/210657 - movies added: 1, series added: 0
+INFO:__main__:Dessinateur express Added to database
+INFO:__main__:--- 2.583984613418579 seconds ---
+INFO:__main__:tt0000064
+INFO:__main__:3/210657 - movies added: 2, series added: 0
+INFO:__main__:Dessinateur Chamberlain Added to database
+INFO:__main__:--- 1.4942429065704346 seconds ---
+INFO:__main__:tt0000065
+INFO:__main__:4/210657 - movies added: 3, series added: 0
+INFO:__main__:Dessinateur Reine Victoria Added to database
+INFO:__main__:--- 1.4830610752105713 seconds ---
+INFO:__main__:tt0000066
+INFO:__main__:5/210657 - movies added: 4, series added: 0
+INFO:__main__:Dessinateur Von Bismark Added to database
+INFO:__main__:--- 1.567136526107788 seconds ---
+INFO:__main__:tt0000067
+INFO:__main__:6/210657 - movies added: 5, series added: 0
+INFO:__main__:Dix chapeaux en 60 secondes Added to database
+INFO:__main__:--- 1.4942729473114014 seconds ---
+INFO:__main__:tt0000068
+INFO:__main__:7/210657 - movies added: 6, series added: 0
+INFO:__main__:Déchargement de bateaux Added to database
+INFO:__main__:--- 1.4176204204559326 seconds ---
+INFO:__main__:tt0000069
+INFO:__main__:8/210657 - movies added: 7, series added: 0
+INFO:__main__:Défense dafficher Added to database
+INFO:__main__:--- 1.8696331977844238 seconds ---
+INFO:__main__:tt0000070
+INFO:__main__:9/210657 - movies added: 8, series added: 0
+INFO:__main__:Démolition dun mur Added to database
+INFO:__main__:--- 1.8199043273925781 seconds ---
+INFO:__main__:tt0000071
+INFO:__main__:10/210657 - movies added: 9, series added: 0
+INFO:__main__:Départ des automobiles Added to database
+INFO:__main__:--- 1.590062141418457 seconds ---
+INFO:__main__:tt0000072
+INFO:__main__:11/210657 - movies added: 10, series added: 0
+INFO:__main__:Départ des officiers Added to database
+INFO:__main__:--- 1.4425697326660156 seconds ---
+INFO:__main__:tt0000073
+INFO:__main__:12/210657 - movies added: 11, series added: 0
+INFO:__main__:Effets de mer sur les rochers Added to database
+INFO:__main__:--- 2.39691424369812 seconds ---
+INFO:__main__:tt0000074
+INFO:__main__:13/210657 - movies added: 12, series added: 0
+INFO:__main__:Enfants jouant sur la plage Added to database
+INFO:__main__:--- 1.5103483200073242 seconds ---
+INFO:__main__:tt0000075
+INFO:__main__:14/210657 - movies added: 13, series added: 0
+INFO:__main__:Escamotage dune dame au théâtre Robert Houdin Added to database
+INFO:__main__:--- 1.9039125442504883 seconds ---
+INFO:__main__:tt0000076
+INFO:__main__:15/210657 - movies added: 14, series added: 0
+INFO:__main__:Exit of Rip and the Dwarf Added to database
+INFO:__main__:--- 1.9598426818847656 seconds ---
+INFO:__main__:tt0000077
+INFO:__main__:16/210657 - movies added: 15, series added: 0
+INFO:__main__:movie_details table found
+INFO:__main__:serie_details table found
+INFO:__main__:tt0000062
+INFO:__main__:1/210657 - movies added: 0, series added: 0
+INFO:__main__:Danse serpentine found
+INFO:__main__:--- 0.001001119613647461 seconds ---
+INFO:__main__:tt0000063
+INFO:__main__:2/210657 - movies added: 0, series added: 0
+INFO:__main__:Dessinateur express found
+INFO:__main__:--- 0.0004994869232177734 seconds ---
+INFO:__main__:tt0000064
+INFO:__main__:3/210657 - movies added: 0, series added: 0
+INFO:__main__:Dessinateur Chamberlain found
+INFO:__main__:--- 0.0009999275207519531 seconds ---
+INFO:__main__:tt0000065
+INFO:__main__:4/210657 - movies added: 0, series added: 0
+INFO:__main__:Dessinateur Reine Victoria found
+INFO:__main__:--- 0.0004987716674804688 seconds ---
+INFO:__main__:tt0000066
+INFO:__main__:5/210657 - movies added: 0, series added: 0
+INFO:__main__:Dessinateur Von Bismark found
+INFO:__main__:--- 0.0004994869232177734 seconds ---
+INFO:__main__:tt0000067
+INFO:__main__:6/210657 - movies added: 0, series added: 0
+INFO:__main__:Dix chapeaux en 60 secondes found
+INFO:__main__:--- 0.0010001659393310547 seconds ---
+INFO:__main__:tt0000068
+INFO:__main__:7/210657 - movies added: 0, series added: 0
+INFO:__main__:Déchargement de bateaux found
+INFO:__main__:--- 0.0004999637603759766 seconds ---
+INFO:__main__:tt0000069
+INFO:__main__:8/210657 - movies added: 0, series added: 0
+INFO:__main__:Défense dafficher found
+INFO:__main__:--- 0.000499725341796875 seconds ---
+INFO:__main__:tt0000070
+INFO:__main__:9/210657 - movies added: 0, series added: 0
+INFO:__main__:Démolition dun mur found
+INFO:__main__:--- 0.0010044574737548828 seconds ---
+INFO:__main__:tt0000071
+INFO:__main__:10/210657 - movies added: 0, series added: 0
+INFO:__main__:Départ des automobiles found
+INFO:__main__:--- 0.0004966259002685547 seconds ---
+INFO:__main__:tt0000072
+INFO:__main__:11/210657 - movies added: 0, series added: 0
+INFO:__main__:Départ des officiers found
+INFO:__main__:--- 0.0009999275207519531 seconds ---
+INFO:__main__:tt0000073
+INFO:__main__:12/210657 - movies added: 0, series added: 0
+INFO:__main__:Effets de mer sur les rochers found
+INFO:__main__:--- 0.0004999637603759766 seconds ---
+INFO:__main__:tt0000074
+INFO:__main__:13/210657 - movies added: 0, series added: 0
+INFO:__main__:Enfants jouant sur la plage found
+INFO:__main__:--- 0.0004994869232177734 seconds ---
+INFO:__main__:tt0000075
+INFO:__main__:14/210657 - movies added: 0, series added: 0
+INFO:__main__:Escamotage dune dame au théâtre Robert Houdin found
+INFO:__main__:--- 0.000499725341796875 seconds ---
+INFO:__main__:tt0000076
+INFO:__main__:15/210657 - movies added: 0, series added: 0
+INFO:__main__:Exit of Rip and the Dwarf found
+INFO:__main__:--- 0.0005004405975341797 seconds ---
+INFO:__main__:tt0000077
+INFO:__main__:16/210657 - movies added: 0, series added: 0
+INFO:__main__:Le fakir, mystère indien Added to database
+INFO:__main__:--- 1.319000005722046 seconds ---
+INFO:__main__:tt0000078
+INFO:__main__:17/210657 - movies added: 1, series added: 0
+INFO:__main__:Feira de Gado na Corujeira Added to database
+INFO:__main__:--- 1.5333895683288574 seconds ---
+INFO:__main__:tt0000079
+INFO:__main__:18/210657 - movies added: 2, series added: 0
+INFO:__main__:La gare Saint-Lazare Added to database
+INFO:__main__:--- 1.9985334873199463 seconds ---
+INFO:__main__:tt0000080
+INFO:__main__:19/210657 - movies added: 3, series added: 0
+INFO:__main__:Grandes manoeuvres Added to database
+INFO:__main__:--- 1.5823473930358887 seconds ---
+INFO:__main__:tt0000081
+INFO:__main__:20/210657 - movies added: 4, series added: 0
+INFO:__main__:Les haleurs de bateaux Added to database
+INFO:__main__:--- 1.5389950275421143 seconds ---
+INFO:__main__:tt0000082
+INFO:__main__:21/210657 - movies added: 5, series added: 0
+INFO:__main__:A Hard Wash Added to database
+INFO:__main__:--- 1.5070712566375732 seconds ---
+INFO:__main__:tt0000083
+INFO:__main__:22/210657 - movies added: 6, series added: 0
+INFO:__main__:Les indiscrets Added to database
+INFO:__main__:--- 1.5274953842163086 seconds ---
+INFO:__main__:tt0000084
+INFO:__main__:23/210657 - movies added: 7, series added: 0
+INFO:__main__:Les ivrognes Added to database
+INFO:__main__:--- 1.384411334991455 seconds ---
+INFO:__main__:tt0000085
+INFO:__main__:24/210657 - movies added: 8, series added: 0
+INFO:__main__:Jardinier brûlant des herbes Added to database
+INFO:__main__:--- 1.6391189098358154 seconds ---
+INFO:__main__:tt0000086
+INFO:__main__:25/210657 - movies added: 9, series added: 0
+INFO:__main__:Jetée et plage de Trouville (1er partie) Added to database
+INFO:__main__:--- 1.682600975036621 seconds ---
+INFO:__main__:tt0000087
+INFO:__main__:26/210657 - movies added: 10, series added: 0
+INFO:__main__:Jetée et plage de Trouville (2e partie) Added to database
+INFO:__main__:--- 1.8039648532867432 seconds ---
+INFO:__main__:tt0000088
+INFO:__main__:27/210657 - movies added: 11, series added: 0
+INFO:__main__:Jour de marché à Trouville Added to database
+INFO:__main__:--- 1.57187819480896 seconds ---
+INFO:__main__:tt0000089
+INFO:__main__:28/210657 - movies added: 12, series added: 0
+INFO:__main__:Départ de Jérusalem en chemin de fer Added to database
+INFO:__main__:--- 1.837688684463501 seconds ---
+INFO:__main__:tt0000090
+INFO:__main__:29/210657 - movies added: 13, series added: 0
+INFO:__main__:Libération des territoriaux Added to database
+INFO:__main__:--- 1.4611420631408691 seconds ---
+INFO:__main__:tt0000091
+INFO:__main__:30/210657 - movies added: 14, series added: 0
+INFO:__main__:Le manoir du diable Added to database
+INFO:__main__:--- 2.4466116428375244 seconds ---
+INFO:__main__:tt0000092
+INFO:__main__:31/210657 - movies added: 15, series added: 0
+INFO:__main__:Marée montante sur Brise-Larmes Added to database
+INFO:__main__:--- 1.471552848815918 seconds ---
+INFO:__main__:tt0000093
+INFO:__main__:32/210657 - movies added: 16, series added: 0
+INFO:__main__:Melbourne Added to database
+INFO:__main__:--- 1.5534718036651611 seconds ---
+INFO:__main__:tt0000094
+INFO:__main__:33/210657 - movies added: 17, series added: 0
+INFO:__main__:Miss de Vere Added to database
+INFO:__main__:--- 1.4690196514129639 seconds ---
+INFO:__main__:tt0000095
+INFO:__main__:34/210657 - movies added: 18, series added: 0
+INFO:__main__:Le papier protée Added to database
+INFO:__main__:--- 1.5603821277618408 seconds ---
+INFO:__main__:tt0000096
+INFO:__main__:35/210657 - movies added: 19, series added: 0
+INFO:__main__:Place Saint-Augustin Added to database
+INFO:__main__:--- 1.4280343055725098 seconds ---
+INFO:__main__:tt0000097
+INFO:__main__:36/210657 - movies added: 20, series added: 0
+INFO:__main__:Place de lOpéra, 1er aspect Added to database
+INFO:__main__:--- 1.6050810813903809 seconds ---
+INFO:__main__:tt0000098
+INFO:__main__:37/210657 - movies added: 21, series added: 0
+INFO:__main__:Place de lOpéra, 2e aspect Added to database
+INFO:__main__:--- 2.2139980792999268 seconds ---
+INFO:__main__:tt0000099
+INFO:__main__:38/210657 - movies added: 22, series added: 0
+INFO:__main__:Place de la Bastille Added to database
+INFO:__main__:--- 1.7377314567565918 seconds ---
+INFO:__main__:tt0000100
+INFO:__main__:39/210657 - movies added: 23, series added: 0
+INFO:__main__:Place de la Concorde Added to database
+INFO:__main__:--- 1.7491481304168701 seconds ---
+INFO:__main__:tt0000101
+INFO:__main__:40/210657 - movies added: 24, series added: 0
+INFO:__main__:movie_details table found
+INFO:__main__:serie_details table found
+INFO:__main__:tt0000082
+INFO:__main__:1/210637 - movies added: 0, series added: 0
+INFO:__main__:A Hard Wash found
+INFO:__main__:--- 0.0010006427764892578 seconds ---
+INFO:__main__:tt0000083
+INFO:__main__:2/210637 - movies added: 0, series added: 0
+INFO:__main__:Les indiscrets found
+INFO:__main__:--- 0.0004985332489013672 seconds ---
+INFO:__main__:tt0000084
+INFO:__main__:3/210637 - movies added: 0, series added: 0
+INFO:__main__:Les ivrognes found
+INFO:__main__:--- 0.0010027885437011719 seconds ---
+INFO:__main__:tt0000085
+INFO:__main__:4/210637 - movies added: 0, series added: 0
+INFO:__main__:Jardinier brûlant des herbes found
+INFO:__main__:--- 0.0004978179931640625 seconds ---
+INFO:__main__:tt0000086
+INFO:__main__:5/210637 - movies added: 0, series added: 0
+INFO:__main__:Jetée et plage de Trouville (1er partie) found
+INFO:__main__:--- 0.0004999637603759766 seconds ---
+INFO:__main__:tt0000087
+INFO:__main__:6/210637 - movies added: 0, series added: 0
+INFO:__main__:Jetée et plage de Trouville (2e partie) found
+INFO:__main__:--- 0.0009996891021728516 seconds ---
+INFO:__main__:tt0000088
+INFO:__main__:7/210637 - movies added: 0, series added: 0
+INFO:__main__:Jour de marché à Trouville found
+INFO:__main__:--- 0.0005004405975341797 seconds ---
+INFO:__main__:tt0000089
+INFO:__main__:8/210637 - movies added: 0, series added: 0
+INFO:__main__:Départ de Jérusalem en chemin de fer found
+INFO:__main__:--- 0.0004992485046386719 seconds ---
+INFO:__main__:tt0000090
+INFO:__main__:9/210637 - movies added: 0, series added: 0
+INFO:__main__:Libération des territoriaux found
+INFO:__main__:--- 0.0010006427764892578 seconds ---
+INFO:__main__:tt0000091
+INFO:__main__:10/210637 - movies added: 0, series added: 0
+INFO:__main__:Le manoir du diable found
+INFO:__main__:--- 0.0004990100860595703 seconds ---
+INFO:__main__:tt0000092
+INFO:__main__:11/210637 - movies added: 0, series added: 0
+INFO:__main__:Marée montante sur Brise-Larmes found
+INFO:__main__:--- 0.0005002021789550781 seconds ---
+INFO:__main__:tt0000093
+INFO:__main__:12/210637 - movies added: 0, series added: 0
+INFO:__main__:Melbourne found
+INFO:__main__:--- 0.001001596450805664 seconds ---
+INFO:__main__:tt0000094
+INFO:__main__:13/210637 - movies added: 0, series added: 0
+INFO:__main__:Miss de Vere found
+INFO:__main__:--- 0.0004994869232177734 seconds ---
+INFO:__main__:tt0000095
+INFO:__main__:14/210637 - movies added: 0, series added: 0
+INFO:__main__:Le papier protée found
+INFO:__main__:--- 0.0009996891021728516 seconds ---
+INFO:__main__:tt0000096
+INFO:__main__:15/210637 - movies added: 0, series added: 0
+INFO:__main__:Place Saint-Augustin found
+INFO:__main__:--- 0.0005002021789550781 seconds ---
+INFO:__main__:tt0000097
+INFO:__main__:16/210637 - movies added: 0, series added: 0
+INFO:__main__:Place de lOpéra, 1er aspect found
+INFO:__main__:--- 0.0004992485046386719 seconds ---
+INFO:__main__:tt0000098
+INFO:__main__:17/210637 - movies added: 0, series added: 0
+INFO:__main__:Place de lOpéra, 2e aspect found
+INFO:__main__:--- 0.0009996891021728516 seconds ---
+INFO:__main__:tt0000099
+INFO:__main__:18/210637 - movies added: 0, series added: 0
+INFO:__main__:Place de la Bastille found
+INFO:__main__:--- 0.0005011558532714844 seconds ---
+INFO:__main__:tt0000100
+INFO:__main__:19/210637 - movies added: 0, series added: 0
+INFO:__main__:Place de la Concorde found
+INFO:__main__:--- 0.0004987716674804688 seconds ---
+INFO:__main__:tt0000101
+INFO:__main__:20/210637 - movies added: 0, series added: 0
+INFO:__main__:Place du théâtre français Added to database
+INFO:__main__:--- 1.1922180652618408 seconds ---
+INFO:__main__:tt0000102
+INFO:__main__:21/210637 - movies added: 1, series added: 0
+INFO:__main__:Plage de Villiers par gros temps Added to database
+INFO:__main__:--- 1.6770224571228027 seconds ---
+INFO:__main__:tt0000103
+INFO:__main__:22/210637 - movies added: 2, series added: 0
+INFO:__main__:Plus fort que le maître Added to database
+INFO:__main__:--- 1.5367541313171387 seconds ---
+INFO:__main__:tt0000104
+INFO:__main__:23/210637 - movies added: 3, series added: 0
+INFO:__main__:Pompiers à Lyon Added to database
+INFO:__main__:--- 1.7226853370666504 seconds ---
+INFO:__main__:tt0000105
+INFO:__main__:24/210637 - movies added: 4, series added: 0
+INFO:__main__:Les quais à Marseille Added to database
+INFO:__main__:--- 2.4358818531036377 seconds ---
+INFO:__main__:tt0000106
+INFO:__main__:25/210637 - movies added: 5, series added: 0
+INFO:__main__:Retour au cantonnement Added to database
+INFO:__main__:--- 1.54925537109375 seconds ---
+INFO:__main__:tt0000107
+INFO:__main__:26/210637 - movies added: 6, series added: 0
+INFO:__main__:movie_details table found
+INFO:__main__:serie_details table found
+INFO:__main__:tt0000102
+INFO:__main__:1/210617 - movies added: 0, series added: 0
+INFO:__main__:Plage de Villiers par gros temps found
+INFO:__main__:--- 0.0009999275207519531 seconds ---
+INFO:__main__:tt0000103
+INFO:__main__:2/210617 - movies added: 0, series added: 0
+INFO:__main__:Plus fort que le maître found
+INFO:__main__:--- 0.0004994869232177734 seconds ---
+INFO:__main__:tt0000104
+INFO:__main__:3/210617 - movies added: 0, series added: 0
+INFO:__main__:Pompiers à Lyon found
+INFO:__main__:--- 0.0005002021789550781 seconds ---
+INFO:__main__:tt0000105
+INFO:__main__:4/210617 - movies added: 0, series added: 0
+INFO:__main__:Les quais à Marseille found
+INFO:__main__:--- 0.0010013580322265625 seconds ---
+INFO:__main__:tt0000106
+INFO:__main__:5/210617 - movies added: 0, series added: 0
+INFO:__main__:Retour au cantonnement found
+INFO:__main__:--- 0.0004990100860595703 seconds ---
+INFO:__main__:tt0000107
+INFO:__main__:6/210617 - movies added: 0, series added: 0
+INFO:__main__:Revue navale à Cherbourg found
+INFO:__main__:--- 0.0005002021789550781 seconds ---
+INFO:__main__:tt0000108
+INFO:__main__:7/210617 - movies added: 0, series added: 0
+INFO:__main__:Rip Leaving Sleepy Hollow Added to database
+INFO:__main__:--- 2.279569149017334 seconds ---
+INFO:__main__:tt0000109
+INFO:__main__:8/210617 - movies added: 1, series added: 0
+INFO:__main__:Rip Meeting the Dwarf Added to database
+INFO:__main__:--- 1.8039445877075195 seconds ---
+INFO:__main__:tt0000110
+INFO:__main__:9/210617 - movies added: 2, series added: 0
+INFO:__main__:Rip Passing Over the Mountain Added to database
+INFO:__main__:--- 1.6494293212890625 seconds ---
+INFO:__main__:tt0000111
+INFO:__main__:10/210617 - movies added: 3, series added: 0
+INFO:__main__:Rips Toast Added to database
+INFO:__main__:--- 1.842792272567749 seconds ---
+INFO:__main__:tt0000112
+INFO:__main__:11/210617 - movies added: 4, series added: 0
+INFO:__main__:Rips Toast to Hudson Added to database
+INFO:__main__:--- 1.848747730255127 seconds ---
+INFO:__main__:tt0000113
+INFO:__main__:12/210617 - movies added: 5, series added: 0
+INFO:__main__:Rips Twenty Years Sleep Added to database
+INFO:__main__:--- 1.968557357788086 seconds ---
+INFO:__main__:tt0000114
+INFO:__main__:13/210617 - movies added: 6, series added: 0
+INFO:__main__:Le régiment Added to database
+INFO:__main__:--- 1.526968240737915 seconds ---
+INFO:__main__:tt0000115
+INFO:__main__:14/210617 - movies added: 7, series added: 0
+INFO:__main__:Réunion dofficiers Added to database
+INFO:__main__:--- 1.7927510738372803 seconds ---
+INFO:__main__:tt0000116
+INFO:__main__:15/210617 - movies added: 8, series added: 0
+INFO:__main__:Sac au dos Added to database
+INFO:__main__:--- 1.527679443359375 seconds ---
+INFO:__main__:tt0000117
+INFO:__main__:16/210617 - movies added: 9, series added: 0
+INFO:__main__:Saída do Pessoal Operário da Fábrica Confiança Added to database
+INFO:__main__:--- 1.6409523487091064 seconds ---
+INFO:__main__:tt0000118
+INFO:__main__:17/210617 - movies added: 10, series added: 0
+INFO:__main__:movie_details table found
+INFO:__main__:serie_details table found
+INFO:__main__:tt0000102
+INFO:__main__:1/210617 - movies added: 0, series added: 0
+INFO:__main__:Plage de Villiers par gros temps found
+INFO:__main__:--- 0.001001119613647461 seconds ---
+INFO:__main__:tt0000103
+INFO:__main__:2/210617 - movies added: 0, series added: 0
+INFO:__main__:Plus fort que le maître found
+INFO:__main__:--- 0.0004999637603759766 seconds ---
+INFO:__main__:tt0000104
+INFO:__main__:3/210617 - movies added: 0, series added: 0
+INFO:__main__:Pompiers à Lyon found
+INFO:__main__:--- 0.0010030269622802734 seconds ---
+INFO:__main__:tt0000105
+INFO:__main__:4/210617 - movies added: 0, series added: 0
+INFO:__main__:Les quais à Marseille found
+INFO:__main__:--- 0.0004971027374267578 seconds ---
+INFO:__main__:tt0000106
+INFO:__main__:5/210617 - movies added: 0, series added: 0
+INFO:__main__:Retour au cantonnement found
+INFO:__main__:--- 0.001001596450805664 seconds ---
+INFO:__main__:tt0000107
+INFO:__main__:6/210617 - movies added: 0, series added: 0
+INFO:__main__:Revue navale à Cherbourg found
+INFO:__main__:--- 0.00052642822265625 seconds ---
+INFO:__main__:tt0000108
+INFO:__main__:7/210617 - movies added: 0, series added: 0
+INFO:__main__:Rip Leaving Sleepy Hollow found
+INFO:__main__:--- 0.0005025863647460938 seconds ---
+INFO:__main__:tt0000109
+INFO:__main__:8/210617 - movies added: 0, series added: 0
+INFO:__main__:Rip Meeting the Dwarf found
+INFO:__main__:--- 0.00046825408935546875 seconds ---
+INFO:__main__:tt0000110
+INFO:__main__:9/210617 - movies added: 0, series added: 0
+INFO:__main__:Rip Passing Over the Mountain found
+INFO:__main__:--- 0.0005340576171875 seconds ---
+INFO:__main__:tt0000111
+INFO:__main__:10/210617 - movies added: 0, series added: 0
+INFO:__main__:Rips Toast found
+INFO:__main__:--- 0.0005023479461669922 seconds ---
+INFO:__main__:tt0000112
+INFO:__main__:11/210617 - movies added: 0, series added: 0
+INFO:__main__:Rips Toast to Hudson found
+INFO:__main__:--- 0.0004949569702148438 seconds ---
+INFO:__main__:tt0000113
+INFO:__main__:12/210617 - movies added: 0, series added: 0
+INFO:__main__:Rips Twenty Years Sleep found
+INFO:__main__:--- 0.0005011558532714844 seconds ---
+INFO:__main__:tt0000114
+INFO:__main__:13/210617 - movies added: 0, series added: 0
+INFO:__main__:Le régiment found
+INFO:__main__:--- 0.0004696846008300781 seconds ---
+INFO:__main__:tt0000115
+INFO:__main__:14/210617 - movies added: 0, series added: 0
+INFO:__main__:Réunion dofficiers found
+INFO:__main__:--- 0.0005309581756591797 seconds ---
+INFO:__main__:tt0000116
+INFO:__main__:15/210617 - movies added: 0, series added: 0
+INFO:__main__:Sac au dos found
+INFO:__main__:--- 0.0004999637603759766 seconds ---
+INFO:__main__:tt0000117
+INFO:__main__:16/210617 - movies added: 0, series added: 0
+INFO:__main__:Saída do Pessoal Operário da Fábrica Confiança found
+INFO:__main__:--- 0.0004980564117431641 seconds ---
+INFO:__main__:tt0000118
+INFO:__main__:17/210617 - movies added: 0, series added: 0
+INFO:__main__:Salut malencontreux dun déserteur Added to database
+INFO:__main__:--- 1.1848044395446777 seconds ---
+INFO:__main__:tt0000119
+INFO:__main__:18/210617 - movies added: 1, series added: 0
+INFO:__main__:Sauvetage en rivière, 1er Added to database
+INFO:__main__:--- 1.669741153717041 seconds ---
+INFO:__main__:tt0000120
+INFO:__main__:19/210617 - movies added: 2, series added: 0
+INFO:__main__:Sauvetage en rivière, 2e Added to database
+INFO:__main__:--- 2.501685380935669 seconds ---
+INFO:__main__:tt0000121
+INFO:__main__:20/210617 - movies added: 3, series added: 0
+INFO:__main__:The Soldiers Courtship Added to database
+INFO:__main__:--- 1.691774606704712 seconds ---
+INFO:__main__:tt0000122
+INFO:__main__:21/210617 - movies added: 4, series added: 0
+INFO:__main__:Sortie des ateliers Vibert Added to database
+INFO:__main__:--- 1.697002649307251 seconds ---
+INFO:__main__:tt0000123
+INFO:__main__:22/210617 - movies added: 5, series added: 0
+INFO:__main__:Séance de prestidigitation Added to database
+INFO:__main__:--- 3.7871389389038086 seconds ---
+INFO:__main__:tt0000124
+INFO:__main__:23/210617 - movies added: 6, series added: 0
+INFO:__main__:Tempête sur la jetée du treport Added to database
+INFO:__main__:--- 1.564265251159668 seconds ---
+INFO:__main__:tt0000125
+INFO:__main__:24/210617 - movies added: 7, series added: 0
+INFO:__main__:The Terrible Railway Accident Added to database
+INFO:__main__:--- 1.622377872467041 seconds ---
+INFO:__main__:tt0000126
+INFO:__main__:25/210617 - movies added: 8, series added: 0
+INFO:__main__:Tom Old Boot Added to database
+INFO:__main__:--- 1.5768475532531738 seconds ---
+INFO:__main__:tt0000127
+INFO:__main__:26/210617 - movies added: 9, series added: 0
+INFO:__main__:Les tribulations dun concierge Added to database
+INFO:__main__:--- 1.7000551223754883 seconds ---
+INFO:__main__:tt0000128
+INFO:__main__:27/210617 - movies added: 10, series added: 0
+INFO:__main__:Un lycée de jeunes filles Added to database
+INFO:__main__:--- 1.4280405044555664 seconds ---
+INFO:__main__:tt0000129
+INFO:__main__:28/210617 - movies added: 11, series added: 0
+INFO:__main__:Un petit diable Added to database
+INFO:__main__:--- 1.5169591903686523 seconds ---
+INFO:__main__:tt0000130
+INFO:__main__:29/210617 - movies added: 12, series added: 0
+INFO:__main__:Une altercation au café Added to database
+INFO:__main__:--- 1.7640676498413086 seconds ---
+INFO:__main__:tt0000131
+INFO:__main__:30/210617 - movies added: 13, series added: 0
+INFO:__main__:Une nuit terrible Added to database
+INFO:__main__:--- 1.66683030128479 seconds ---
+INFO:__main__:tt0000132
+INFO:__main__:31/210617 - movies added: 14, series added: 0
+INFO:__main__:Une partie de cartes Added to database
+INFO:__main__:--- 1.897735357284546 seconds ---
+INFO:__main__:tt0000133
+INFO:__main__:32/210617 - movies added: 15, series added: 0
+INFO:__main__:La voiture du potier Added to database
+INFO:__main__:--- 1.8658649921417236 seconds ---
+INFO:__main__:tt0000134
+INFO:__main__:33/210617 - movies added: 16, series added: 0
+INFO:__main__:The Wandering Negro Minstrels Added to database
+INFO:__main__:--- 1.764622449874878 seconds ---
+INFO:__main__:tt0000135
+INFO:__main__:34/210617 - movies added: 17, series added: 0
+INFO:__main__:movie_details table not found
+INFO:__main__:creating movie_details table
+INFO:__main__:serie_details table not found
+INFO:__main__:creating serie_details table
+INFO:__main__:tt0000122
+INFO:__main__:1/210597 - movies added: 0, series added: 0
+INFO:__main__:Sortie des ateliers Vibert Added to database
+INFO:__main__:--- 1.374985694885254 seconds ---
+INFO:__main__:tt0000123
+INFO:__main__:2/210597 - movies added: 1, series added: 0
+INFO:__main__:Séance de prestidigitation Added to database
+INFO:__main__:--- 1.4561383724212646 seconds ---
+INFO:__main__:tt0000124
+INFO:__main__:3/210597 - movies added: 2, series added: 0
+INFO:__main__:Tempête sur la jetée du treport Added to database
+INFO:__main__:--- 1.0891101360321045 seconds ---
+INFO:__main__:tt0000125
+INFO:__main__:4/210597 - movies added: 3, series added: 0
+INFO:__main__:The Terrible Railway Accident Added to database
+INFO:__main__:--- 1.0738091468811035 seconds ---
+INFO:__main__:tt0000126
+INFO:__main__:5/210597 - movies added: 4, series added: 0
+INFO:__main__:Tom Old Boot Added to database
+INFO:__main__:--- 1.151057481765747 seconds ---
+INFO:__main__:tt0000127
+INFO:__main__:6/210597 - movies added: 5, series added: 0
+INFO:__main__:Les tribulations dun concierge Added to database
+INFO:__main__:--- 1.1461224555969238 seconds ---
+INFO:__main__:tt0000128
+INFO:__main__:7/210597 - movies added: 6, series added: 0
+INFO:__main__:Un lycée de jeunes filles Added to database
+INFO:__main__:--- 1.2892787456512451 seconds ---
+INFO:__main__:tt0000129
+INFO:__main__:8/210597 - movies added: 7, series added: 0
+INFO:__main__:Un petit diable Added to database
+INFO:__main__:--- 1.261397361755371 seconds ---
+INFO:__main__:tt0000130
+INFO:__main__:9/210597 - movies added: 8, series added: 0
+INFO:__main__:Une altercation au café Added to database
+INFO:__main__:--- 1.400928020477295 seconds ---
+INFO:__main__:tt0000131
+INFO:__main__:10/210597 - movies added: 9, series added: 0
